@@ -1,0 +1,26 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           00010005
+//JSTEP01  EXEC PGM=ASSIST                                              00020000
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN    DD *                                                         00050000
+*****************************************************************       00114099
+* NAME: ABRAHAM RODRIGUEZ                                       *       00115099
+*                                                               *       00115199
+* ASSIGNMENT 5 - DUMP ASSIGNMENT                                *       00115299
+*                                                               *       00116099
+*****************************************************************       00121199
+DUMP1    CSECT                                                          00121299
+         USING DUMP1,15           ESTABLISH A BASE REGISTER             00121399
+         L     1,ONE              LOAD THE FIRST NUMBER INTO R1         00121499
+         L     2,TWO              LOAD THE SECOND INTO R2               00121599
+         AR    1,2                ADD THE TWO NUMBERS                   00121699
+         ST    1,THREE            STORE THE RESULT                      00121799
+         XDUMP THREE,4            DUMP THE RESULT                       00121899
+         BR    14                 RETURN TO CALLER                      00121999
+ONE      DC    F'64'              FIRST NUMBER                          00122099
+TWO      DC    F'32'              SECOND NUMBER                         00123099
+THREE    DC    CL4' '             SUM OF THE TWO NUMBERS                00123199
+EOFFLAG  DC    C'0'               A FLAG SAVE AREA                      00124099
+         END   DUMP1                                                    00126099
+/*                                                                      00300002
+//*                                                                     00310002

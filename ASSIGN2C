@@ -1,0 +1,34 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           00010004
+//JSTEP01  EXEC PGM=ASSIST                                              00020000
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN    DD *                                                         00050000
+*****************************************************************       00060000
+*                                                               *       00070000
+* NAME: ABRAHAM RODRIGUEZ                                       *       00071006
+*                                                               *       00072006
+* ASSIGNMENT 2C - BASIC ASSEMBLY PROGRAM                        *       00080000
+*                                                               *       00090000
+* FUNCTION:                                                     *       00091006
+* PART C: LOAD AND SUBTRACT REGISTERS 2&3 USING EXPLICIT ADDRESS*       00100006
+*         THEN, USE THE XDUMP TO DUMP REGISTERS. CREATE VARIABLE*       00110000
+*         ANSWER TO STORE RESULTS IN. THEN, DUMPING ANSWER VAR. *       00120000
+*         IN THE LENGTH OF 4 BITS.                              *       00130000
+*                                                               *       00140000
+*****************************************************************       00150000
+MAIN     CSECT                                                          00160000
+         USING MAIN,15     ESTABLISH ADDRESSABILITY ON REGISTER 15      00170000
+*                                                                       00171007
+         L     2,24(,15)   LOAD EXPLICIT ADDRESS TO R2                  00180006
+         L     3,28(,15)   LOAD EXPLICIT ADDRESS TO R3                  00190006
+         SR    2,3         SUBTRACTS REGISTER 2 FROM 3                  00200000
+         ST    2,32(,15)   STORING R2 EXPLICIT ADDRESS IN ANSWER        00210006
+         XDUMP ANSWER,4                                                 00220000
+         BR    14          RETURN TO CALLER                             00230000
+*                                                                       00231007
+         DC    F'15'       INITIALIZE VARAIBLE N1 AS FULLWORD 15        00240004
+         DC    F'7'        INITIALIZE VARAIBLE N2 AS FULLWORD 7         00250004
+ANSWER   DC    F'0'        INITIALIZE VARAIBLE N2 AS FULLWORD 0         00260006
+         END   MAIN                                                     00270000
+/*                                                                      00280000
+//                                                                      00290000

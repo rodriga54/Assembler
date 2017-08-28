@@ -1,0 +1,84 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 18.33.47 JOB08946 ---- MONDAY,    29 JUN 2015 ----
+ 18.33.47 JOB08946  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 18.33.47 JOB08946  ICH70001I KC03F7F  LAST ACCESS AT 18:32:59 ON MONDAY, JUNE 29, 2015
+ 18.33.47 JOB08946  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 18.33.47 JOB08946  -                                         --TIMINGS (MINS.)--            ----PAGING COUNTS---
+ 18.33.47 JOB08946  -JOBNAME  STEPNAME PROCSTEP    RC   EXCP    TCB    SRB  CLOCK   SERV  PG   PAGE   SWAP    VIO SWAPS
+ 18.33.47 JOB08946  -KC03F7FA                      00     37 ******    .00     .0     73   0      0      0      0     0
+ 18.33.47 JOB08946  -KC03F7FA ENDED.  NAME-ABRAHAM RODRIGUEZ    TOTAL TCB CPU TIME=   .00  TOTAL ELAPSED TIME=    .0
+ 18.33.47 JOB08946  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  29 JUN 2015 JOB EXECUTION DATE
+-           33 CARDS READ
+-           84 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-            7 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB08946
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00020000
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN    DD *                                                         00050000
+ ICH70001I KC03F7F  LAST ACCESS AT 18:32:59 ON MONDAY, JUNE 29, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB08946.D0000102.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB08946.D0000101.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015180.1833
+ IEF032I STEP/JSTEP01 /STOP  2015180.1833 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11468K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015180.1833
+ IEF033I  JOB/KC03F7FA/STOP  2015180.1833 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00060000         
+                                       2 *                                                               *       00070000         
+                                       3 * NAME: ABRAHAM RODRIGUEZ                                       *       00071006         
+                                       4 *                                                               *       00072006         
+                                       5 * ASSIGNMENT 2C - BASIC ASSEMBLY PROGRAM                        *       00080000         
+                                       6 *                                                               *       00090000         
+                                       7 * FUNCTION:                                                     *       00091006         
+                                       8 * PART C: LOAD AND SUBTRACT REGISTERS 2&3 USING EXPLICIT ADDRESS*       00100006         
+                                       9 *         THEN, USE THE XDUMP TO DUMP REGISTERS. CREATE VARIABLE*       00110000         
+                                      10 *         ANSWER TO STORE RESULTS IN. THEN, DUMPING ANSWER VAR. *       00120000         
+                                      11 *         IN THE LENGTH OF 4 BITS.                              *       00130000         
+                                      12 *                                                               *       00140000         
+                                      13 *****************************************************************       00150000         
+ 000000                               14 MAIN     CSECT                                                          00160000         
+ 000000                               15          USING MAIN,15     ESTABLISH ADDRESSABILITY ON REGISTER 15      00170000         
+                                      16 *                                                                       00171007         
+ 000000 5820 F018            00018    17          L     2,24(,15)   LOAD EXPLICIT ADDRESS TO R2                  00180006         
+ 000004 5830 F01C            0001C    18          L     3,28(,15)   LOAD EXPLICIT ADDRESS TO R3                  00190006         
+ 000008 1B23                          19          SR    2,3         SUBTRACTS REGISTER 2 FROM 3                  00200000         
+ 00000A 5020 F020            00020    20          ST    2,32(,15)   STORING R2 EXPLICIT ADDRESS IN ANSWER        00210006         
+ 00000E E060 F020 0004 00020          21          XDUMP ANSWER,4                                                 00220000         
+ 000014 07FE                          22          BR    14          RETURN TO CALLER                             00230000         
+                                      23 *                                                                       00231007         
+ 000018 0000000F                      24          DC    F'15'       INITIALIZE VARAIBLE N1 AS FULLWORD 15        00240004         
+ 00001C 00000007                      25          DC    F'7'        INITIALIZE VARAIBLE N2 AS FULLWORD 7         00250004         
+ 000020 00000000                      26 ANSWER   DC    F'0'        INITIALIZE VARAIBLE N2 AS FULLWORD 0         00260006         
+                                      27          END   MAIN                                                     00270000         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    1000 HIGH:     340 LEAVING:  492228 FREE BYTES. AVERAGE:       47 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,    28000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0BEGIN XSNAP - CALL     1 AT E0000014 USER STORAGE                                                                                
+0                             CORE ADDRESSES SPECIFIED-     000020 TO 000024                                                      
+ 000020   00000008 F5F5F5F5 F5F5F5F5 00000000    F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5   *....55555555....5555555555555555*         
+0                                                                                                                                 
+0*** EXECUTION TIME =    0.000 SECS.         6 INSTRUCTIONS EXECUTED -     6000 INSTRUCTIONS/SEC ***                              
+0*** FIRST CARD NOT READ: NO CARDS READ:FILE UNOPENED                                                                             
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

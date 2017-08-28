@@ -1,0 +1,274 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 23.19.25 JOB05910 ---- THURSDAY,  16 JUL 2015 ----
+ 23.19.25 JOB05910  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 23.19.25 JOB05910  ICH70001I KC03F7F  LAST ACCESS AT 22:56:02 ON THURSDAY, JULY 16, 2015
+ 23.19.25 JOB05910  $HASP373 KC03F7FA STARTED - INIT 1    - CLASS A        - SYS S0W1
+ 23.19.25 JOB05910  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  16 JUL 2015 JOB EXECUTION DATE
+-          210 CARDS READ
+-          274 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           28 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB05910
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00020000
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN    DD *                                                         00050000
+           //*                                                                     00310002
+         6 //FT05F001 DD  *                                                        00320008
+ ICH70001I KC03F7F  LAST ACCESS AT 22:56:02 ON THURSDAY, JULY 16, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF237I JES2 ALLOCATED TO FT05F001
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB05910.D0000103.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB05910.D0000101.?         SYSIN         
+ IEF285I   KC03F7F.KC03F7FA.JOB05910.D0000102.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015197.2319
+ IEF032I STEP/JSTEP01 /STOP  2015197.2319 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11476K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015197.2319
+ IEF033I  JOB/KC03F7FA/STOP  2015197.2319 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00114099         
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *       00115099         
+                                       3 *                                                               *       00115199         
+                                       4 * ASSIGNMENT 6 - PROCESS SINGLE NUMBER AND PRINTS               *       00115299         
+                                       5 *                                                               *       00116099         
+                                       6 * FUNCTION: THIS PROGRAM READS A SINGLE NUMBER OF INTEGERS      *       00117099         
+                                       7 * AND PRINTS OUT A MESSAGE IF THE NUMBER IS POSITIVE, ZERO, OR  *       00118099         
+                                       8 * NEGATIVE. KEEP A RUNNING TOTAL OF THE NUMBER OF ZEROS,        *       00118199         
+                                       9 * POSITIVE, AND NEGATIVE NUMBERS.                               *       00118299         
+                                      10 *                                                               *       00118399         
+                                      11 * INPUT:THE INPUT LINE CONTAINS AN UNKNOWN AMOUNT OF 1 INTEGERS *       00119099         
+                                      12 * TO BE PROCESSED.                                              *       00119199         
+                                      13 *                                                               *       00119299         
+                                      14 * OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE NUMBERS PROCESSED   *       00119399         
+                                      15 * FROM THE INPUT DATA. SECOND FINDS THE LOWEST, HIGHEST, AND    *       00119499         
+                                      16 * AVERAGE NUMBERS.                                              *       00119599         
+                                      17 *                                                               *       00119699         
+                                      18 * REGISTER USAGE:                                               *       00119799         
+                                      19 *               R2 = USED FOR THE PROCESS OF OLL RECORDS        *       00119899         
+                                      20 *               R3 = USED FOR THE SUM OF ALL RECORDS            *       00119999         
+                                      21 *               R4 = COUNTER FOR THE ZERO NUMBER                *       00120099         
+                                      22 *               R5 = COUNTER FOR THE NEGATIVE NUMBER            *       00120199         
+                                      23 *               R6 = COUNTER FOR THE POSITIVE NUMBER            *       00120299         
+                                      24 *               R7 = USED FOR LOWEST COUNTER                    *       00120399         
+                                      25 *               R8 = USED FOR HIGHEST COUNTER                   *       00120499         
+                                      26 *               R9 = USED FOR THE SUM OF ALL RECORDS            *       00120599         
+                                      27 *                                                               *       00120699         
+                                      28 * NOTES:                                                        *       00120999         
+                                      29 *                                                               *       00121099         
+                                      30 *****************************************************************       00121199         
+ 000000                               31 MAIN      CSECT                                                         00130001         
+ 000000                               32           USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099         
+                                      33 *                                                                       00150002         
+ 000000 1B33                          34           SR    3,3                 HOLDS THE SUM OF ALL RECORDS        00150399         
+ 000002 1B44                          35           SR    4,4                 COUNTER FOR THE ZERO NUMBER         00150499         
+ 000004 1B55                          36           SR    5,5                 COUNTER FOR THE NEGATIVE NUMBER     00150599         
+ 000006 1B66                          37           SR    6,6                 COUNTER FOR THE POSITIVE NUMBER     00150699         
+ 000008 1B77                          38           SR    7,7                 HOLDS THE LOWEST NEG NUM            00150799         
+ 00000A 1B88                          39           SR    8,8                 HOLDS THE GREATEST POS NUM          00150899         
+ 00000C 1B99                          40           SR    9,9                 HOLDS NUMBER OF RECORDS PROCESSED   00150999         
+                                      41 *                                                                       00151099         
+ 00000E 4170 F12F            0012F    42           LA    7,LOWEST            LOAD THE LOWEST POSSIBLE NUMBER     00151199         
+ 000012 4180 F133            00133    43           LA    8,HIGHEST           LOAD THE HIGHEST POSSIBLE NUMBER    00151299         
+                                      44 *                                                                       00151399         
+ 000016 E020 F187 0085 00187          45           XPRNT NEWLINE,133         PRINTS BLANK LINE                   00151499         
+ 00001C E020 F20C 0085 0020C          46           XPRNT REPORT1,133         PRINTS COLUMN HEADERS               00151599         
+ 000022 E020 F187 0085 00187          47           XPRNT NEWLINE,133         PRINTS BLANK LINE                   00151699         
+ 000028 E000 F137 0050 00137          48           XREAD BUFFER,80           READ FIRST RECORD                   00151799         
+                                      49 *                                                                       00152002         
+ 00002E 4770 F0A8            000A8    50 LOOP1     BNZ   ENDLOOP1            EOF BRANCH  TO ENDLOOP1             00160099         
+                                      51 *                                   START OF COLUMN 1                   00170099         
+ 000032 4190 9001            00001    52           LA    9,1(,9)             ADD 1 RECORD COUNTER                00190099         
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                      53 *                                                                       00190299         
+ 000036 5320 F137            00137    54           XDECI 2,BUFFER                                                00190399         
+ 00003A 1A32                          55           AR    3,2                 CUMALATIVE SUM                      00190499         
+ 00003C 1222                          56           LTR   2,2                 CHECK THE NUMBER IN REG 2           00191199         
+                                      57 *                                                                       00191299         
+ 00003E 4780 F04A            0004A    58           BZ    ZERO                BRANCH IF ZERO                      00191399         
+ 000042 4740 F05C            0005C    59           BM    NEGATIVE            BRANCH IF NEGATIVE                  00191499         
+ 000046 47F0 F07A            0007A    60           B     POSITIVE            BRANCH IF POSITIVE                  00191599         
+                                      61 *                                                                       00191699         
+ 00004A 4140 4001            00001    62 ZERO      LA    4,1(,4)             ADD 1 RECORD COUNTER                00191799         
+ 00004E D208 F2B0 F114 002B0 00114    63           MVC   SIGN(9),SGNZERO                                         00191899         
+ 000054 5220 F2A4            002A4    64           XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00191999         
+ 000058 47F0 F098            00098    65           B     READNEXT            BRANCK TO READ NEXT RECORD          00192199         
+                                      66 *                                                                       00192299         
+ 00005C 4150 5001            00001    67 NEGATIVE  LA    5,1(,5)             ADD 1 RECORD COUNTER                00192399         
+ 000060 D208 F2B0 F11D 002B0 0011D    68           MVC   SIGN(9),SIGNNEG                                         00192499         
+ 000066 5220 F2A4            002A4    69           XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00192599         
+ 00006A 1927                          70           CR    2,7                 COMPARE NEW VALUE TO CURRENT LOW    00192799         
+ 00006C 4740 F074            00074    71           BL    LOADLOW             BRANCH TO LOAD NEW LOWEST VALUE     00192899         
+ 000070 47F0 F098            00098    72           B     READNEXT            BRANCK TO READ NEXT RECORD          00192999         
+ 000074 1872                          73 LOADLOW   LR    7,2                 LOAD NEW LOWEST # TO R7             00193099         
+ 000076 47F0 F098            00098    74           B     READNEXT            BRANCK TO READ NEXT RECORD          00193199         
+                                      75 *                                                                       00193299         
+ 00007A 4160 6001            00001    76 POSITIVE  LA    6,1(,6)             ADD 1 RECORD COUNTER                00193399         
+ 00007E D208 F2B0 F126 002B0 00126    77           MVC   SIGN(9),SIGNPOS                                         00193499         
+ 000084 5220 F2A4            002A4    78           XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00193599         
+ 000088 1928                          79           CR    2,8                 COMPARE NEW VALUE TO CURRENT HIGH   00193699         
+ 00008A 4720 F092            00092    80           BH    LOADHIGH            BRANCH TO LOAD NEW HIGHEST VALUE    00193799         
+ 00008E 47F0 F098            00098    81           B     READNEXT            BRANCK TO READ NEXT RECORD          00193899         
+ 000092 1882                          82 LOADHIGH  LR    8,2                 LOAD NEW HIGHEST # TO R7            00193999         
+ 000094 47F0 F098            00098    83           B     READNEXT            BRANCK TO READ NEXT RECORD          00194199         
+                                      84 *                                                                       00194299         
+ 000098 E020 F290 0085 00290          85 READNEXT  XPRNT REPORT2,133         READ NEXT INPUT RECORD              00194399         
+                                      86 *                                                                       00194499         
+ 00009E E000 F137 0050 00137          87           XREAD BUFFER,80                                               00194599         
+ 0000A4 47F0 F02E            0002E    88           B     LOOP1         BRANCH TO BEGINNING OF LOOP1              00194699         
+                                      89 *                                                                       00194799         
+ 0000A8 E020 F187 0085 00187          90 ENDLOOP1  XPRNT NEWLINE,133   END OF LOOP1 AND PRINTS BLANK LINE        00194899         
+ 0000AE E020 F315 0085 00315          91           XPRNT TOTAL1,133                                              00196099         
+ 0000B4 E020 F187 0085 00187          92           XPRNT NEWLINE,133         PRINTS BLANK LINE                   00215099         
+                                      93 *                                                                       00240099         
+ 0000BA 5C20 F110            00110    94           M     2,=F'1'       ZERO OUT THE EVEN REGISTER                00240199         
+ 0000BE 1D29                          95           DR    2,9           DIVIDES TO CALC AVERAGE                   00240299         
+                                      96 *                                                                       00241099         
+ 0000C0 5240 F3AF            003AF    97           XDECO 4,ZERONUM           PUT ZERO COUNTER ONTO PRINT LINE    00241399         
+ 0000C4 E020 F39B 0085 0039B          98           XPRNT ZEROCNT,133         PRINTS THE COUNTER FOR ZERO         00241499         
+                                      99 *                                                                       00241599         
+ 0000CA 5250 F436            00436   100           XDECO 5,LOWNUM            PUT LOWEST COUNTER ONTO PRINT LINE  00241699         
+ 0000CE E020 F422 0085 00422         101           XPRNT LOWCNT,133          PRINTS THE COUNTER FOR NEG          00241799         
+                                     102 *                                                                       00241899         
+ 0000D4 5260 F4BB            004BB   103           XDECO 6,HIGHNUM           PUT HIGHEST COUNTER ONTO PRINT LINE 00241999         
+ 0000D8 E020 F4A7 0085 004A7         104           XPRNT HIGHCNT,133         PRINTS THE COUNTER FOR POS          00242099         
+                                     105 *                                                                       00242199         
+ 0000DE E020 F187 0085 00187         106           XPRNT NEWLINE,133         PRINTS BLANK LINE                   00242299         
+                                     107 *                                                                       00242399         
+ 0000E4 5270 F540            00540   108           XDECO 7,NEWLOW            PUT THE LOWEST NUM ONTO PRINT LINE  00242499         
+ 0000E8 E020 F52C 0085 0052C         109           XPRNT LOW1,133            PRINTS THE LOWEST NUM               00242599         
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     110 *                                                                       00242699         
+ 0000EE 5280 F5C5            005C5   111           XDECO 8,NEWHIGH           PUT THE HIGHEST NUM ONTO PRINT LINE 00242799         
+ 0000F2 E020 F5B1 0085 005B1         112           XPRNT HIGH1,133           PRINTS THE HIGHEST NUM              00242899         
+                                     113 *                                                                       00242999         
+ 0000F8 5230 F64A            0064A   114           XDECO 3,AVG1              PUT THE AVERAGE ONTO PRINT LINE     00243099         
+ 0000FC E020 F636 0085 00636         115           XPRNT AVERAGE,133         PRINTS THE AVERAGE                  00243199         
+                                     116 *                                                                       00243299         
+ 000102 E020 F187 0085 00187         117           XPRNT NEWLINE,133         PRINTS BLANK LIN                    00243399         
+                                     118 *                                                                       00243499         
+ 000108 07FE                         119           BR    14                                                      00243599         
+                                     120 *                                                                       00244099         
+                                     121           LTORG                                                         00250003         
+ 000110 00000001                     122                =F'1'                                                                     
+                                     123 *                                                                       00251099         
+ 000114 40E9C5D9D6404040             124 SGNZERO   DC    CL9' ZERO    '                                          00252099         
+ 00011D 40D5C5C7C1E3C9E5             125 SIGNNEG   DC    CL9' NEGATIVE'                                          00253099         
+ 000126 40D7D6E2C9E3C9E5             126 SIGNPOS   DC    CL9' POSITIVE'                                          00254099         
+ 00012F 80000000                     127 LOWEST    DC    X'80000000'                                             00254199         
+ 000133 7FFFFFFF                     128 HIGHEST   DC    X'7FFFFFFF'                                             00254299         
+                                     129 *                                                                       00255099         
+ 000137                              130 BUFFER    DS    CL80          BUFFER FOR THE READ RECORD                00270099         
+                                     131 *                                                                       00280002         
+ 000187 F0                           132 NEWLINE   DC    C'0'          PRINTS BLANK LINE                         00280199         
+ 000188 4040404040404040             133           DC    132C' '                                                 00280299         
+                                     134 *                                                                       00280399         
+ 00020C F1                           135 REPORT1   DC    C'1'          PRINT ON TOP OF NEXT PAGE                 00281099         
+ 00020D 5C5C5C5C40D5E4D4             136           DC    CL23'**** NUMBER REPORT ****'                           00281299         
+ 000224 4040404040404040             137           DC    108C' '                                                 00281399         
+                                     138 *                                                                       00281499         
+ 000290 F0                           139 REPORT2   DC    C'0'                                                    00282099         
+ 000291 4040D5E4D4C2C5D9             140           DC    CL19'  NUMBER PROCESSED:'                               00282199         
+ 0002A4                              141 PRONUM1   DS    CL12' '       OUTPUT SPACE FOR NUMBER READ              00282299         
+ 0002B0 4040404040404040             142 SIGN      DC    CL8' '                                                  00282399         
+ 0002B8 4040404040404040             143           DC    93C' '                                                  00282499         
+                                     144 *                                                                       00282599         
+ 000315 F1                           145 TOTAL1    DC    C'1'                                                    00282699         
+ 000316 5C5C5C5C40E3D6E3             146           DC    CL15'**** TOTAL ****'                                   00282799         
+ 000325 4040404040404040             147           DC    118C' '                                                 00282899         
+                                     148 *                                                                       00282999         
+ 00039B F0                           149 ZEROCNT   DC    C'0'                                                    00283099         
+ 00039C 404040D5E4D4C2C5             150           DC    CL19'   NUMBER OF ZEROS:'                               00283199         
+ 0003AF 4040404040404040             151 ZERONUM   DC    CL12' '                                                 00283299         
+ 0003BB 4040404040404040             152           DC    103C' '                                                 00283399         
+                                     153 *                                                                       00283499         
+ 000422 F0                           154 LOWCNT    DC    C'0'                                                    00284099         
+ 000423 D5E4D4C2C5D940D6             155           DC    CL19'NUMBER OF NEGATIVE:'                               00285099         
+ 000436 4040404040404040             156 LOWNUM    DC    CL12' '                                                 00285199         
+ 000442 4040404040404040             157           DC    101C' '                                                 00286099         
+                                     158 *                                                                       00286199         
+ 0004A7 F0                           159 HIGHCNT   DC    C'0'                                                    00286299         
+ 0004A8 D5E4D4C2C5D940D6             160           DC    CL19'NUMBER OF POSITIVE:'                               00286399         
+ 0004BB 4040404040404040             161 HIGHNUM   DC    CL12' '                                                 00286499         
+ 0004C7 4040404040404040             162           DC    101C' '                                                 00286599         
+                                     163 *                                                                       00286699         
+ 00052C F0                           164 LOW1      DC    C'0'                                                    00288099         
+ 00052D 4040404040404040             165           DC    CL19'            L0WEST:'                               00288199         
+ 000540 4040404040404040             166 NEWLOW    DC    CL12' '                                                 00288299         
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00054C 4040404040404040             167           DC    101C' '                                                 00288399         
+                                     168 *                                                                       00288499         
+ 0005B1 F0                           169 HIGH1     DC    C'0'                                                    00288599         
+ 0005B2 4040404040404040             170           DC    CL19'           HIGHEST:'                               00288699         
+ 0005C5 4040404040404040             171 NEWHIGH   DC    CL12' '                                                 00288799         
+ 0005D1 4040404040404040             172           DC    101C' '                                                 00288899         
+                                     173 *                                                                       00288999         
+ 000636 F0                           174 AVERAGE   DC    C'0'                                                    00289099         
+ 000637 4040404040404040             175           DC    CL19'           AVERAGE:'                               00289199         
+ 00064A 4040404040404040             176 AVG1      DC    CL12' '                                                 00289299         
+ 000656 4040404040404040             177           DC    101C' '                                                 00289399         
+                                     178 *                                                                       00289499         
+                                     179           END   MAIN                                                    00290028         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    9656 HIGH:     988 LEAVING:  482924 FREE BYTES. AVERAGE:       59 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.001 SECS,   180000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0                                                                                                                                 
+1**** NUMBER REPORT ****                                                                                                          
+0                                                                                                                                 
+0  NUMBER PROCESSED:         500 POSITIVE                                                                                         
+0  NUMBER PROCESSED:          23 POSITIVE                                                                                         
+0  NUMBER PROCESSED:         -45 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:           0 ZERO                                                                                             
+0  NUMBER PROCESSED:           5 POSITIVE                                                                                         
+0  NUMBER PROCESSED:          -1 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:         324 POSITIVE                                                                                         
+0  NUMBER PROCESSED:       99999 POSITIVE                                                                                         
+0  NUMBER PROCESSED:          41 POSITIVE                                                                                         
+0  NUMBER PROCESSED:          17 POSITIVE                                                                                         
+0  NUMBER PROCESSED:           0 ZERO                                                                                             
+0  NUMBER PROCESSED:       -2280 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:         -47 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:         888 POSITIVE                                                                                         
+0  NUMBER PROCESSED:         -35 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:           4 POSITIVE                                                                                         
+0  NUMBER PROCESSED:         -99 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:           0 ZERO                                                                                             
+0  NUMBER PROCESSED:         -66 NEGATIVE                                                                                         
+0  NUMBER PROCESSED:         100 POSITIVE                                                                                         
+0  NUMBER PROCESSED:         333 POSITIVE                                                                                         
+0  NUMBER PROCESSED:          95 POSITIVE                                                                                         
+0  NUMBER PROCESSED:         -59 NEGATIVE                                                                                         
+0                                                                                                                                 
+1**** TOTAL ****                                                                                                                  
+0                                                                                                                                 
+0   NUMBER OF ZEROS:           3                                                                                                  
+0NUMBER OF NEGATIVE:           8                                                                                                  
+0NUMBER OF POSITIVE:          12                                                                                                  
+0                                                                                                                                 
+0            L0WEST:       -2280                                                                                                  
+0           HIGHEST:       99999                                                                                                  
+0           AVERAGE:        4334                                                                                                  
+0                                                                                                                                 
+0*** EXECUTION TIME =    0.000 SECS.       409 INSTRUCTIONS EXECUTED -   409000 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

@@ -1,0 +1,211 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           00010005
+//JSTEP01  EXEC PGM=ASSIST                                              00020000
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN    DD *                                                         00050000
+*****************************************************************       00114099
+* NAME: ABRAHAM RODRIGUEZ                                       *       00115099
+*                                                               *       00115199
+* ASSIGNMENT 6 - PROCESS SINGLE NUMBER AND PRINTS               *       00115299
+*                                                               *       00116099
+* FUNCTION: THIS PROGRAM READS A SINGLE NUMBER OF INTEGERS      *       00117099
+* AND PRINTS OUT A MESSAGE IF THE NUMBER IS POSITIVE, ZERO, OR  *       00118099
+* NEGATIVE. KEEP A RUNNING TOTAL OF THE NUMBER OF ZEROS,        *       00118199
+* POSITIVE, AND NEGATIVE NUMBERS.                               *       00118299
+*                                                               *       00118399
+* INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF 1 INTEGERS *       00119099
+* TO BE PROCESSED.                                              *       00119199
+*                                                               *       00119299
+* OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE NUMBERS PROCESSED   *       00119399
+* FROM THE INPUT DATA. SECOND FINDS THE LOWEST, HIGHEST, AND    *       00119499
+* AVERAGE NUMBERS.                                              *       00119599
+*                                                               *       00119699
+* REGISTER USAGE:                                               *       00119799
+*               R2 = USED FOR THE PROCESS OF OLL RECORDS        *       00119899
+*               R3 = USED FOR THE SUM OF ALL RECORDS            *       00119999
+*               R4 = COUNTER FOR THE ZERO NUMBER                *       00120099
+*               R5 = COUNTER FOR THE NEGATIVE NUMBER            *       00120199
+*               R6 = COUNTER FOR THE POSITIVE NUMBER            *       00120299
+*               R7 = USED FOR LOWEST COUNTER                    *       00120399
+*               R8 = USED FOR HIGHEST COUNTER                   *       00120499
+*               R9 = USED FOR THE SUM OF ALL RECORDS            *       00120599
+*                                                               *       00120699
+* NOTES:                                                        *       00120999
+*                                                               *       00121099
+*****************************************************************       00121199
+MAIN      CSECT                                                         00130001
+          USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099
+*                                                                       00150002
+          SR    3,3                 HOLDS THE SUM OF ALL RECORDS        00150399
+          SR    4,4                 COUNTER FOR THE ZERO NUMBER         00150499
+          SR    5,5                 COUNTER FOR THE NEGATIVE NUMBER     00150599
+          SR    6,6                 COUNTER FOR THE POSITIVE NUMBER     00150699
+          SR    7,7                 HOLDS THE LOWEST NEG NUM            00150799
+          SR    8,8                 HOLDS THE GREATEST POS NUM          00150899
+          SR    9,9                 HOLDS NUMBER OF RECORDS PROCESSED   00150999
+*                                                                       00151099
+          LA    7,LOWEST            LOAD THE LOWEST POSSIBLE NUMBER     00151199
+          LA    8,HIGHEST           LOAD THE HIGHEST POSSIBLE NUMBER    00151299
+*                                                                       00151399
+          XPRNT NEWLINE,133         PRINTS BLANK LINE                   00151499
+          XPRNT REPORT1,133         PRINTS COLUMN HEADERS               00151599
+          XPRNT NEWLINE,133         PRINTS BLANK LINE                   00151699
+          XREAD BUFFER,80           READ FIRST RECORD                   00151799
+*                                                                       00152002
+LOOP1     BNZ   ENDLOOP1            EOF BRANCH  TO ENDLOOP1             00160099
+*                                   START OF COLUMN 1                   00170099
+          LA    9,1(,9)             ADD 1 RECORD COUNTER                00190099
+*                                                                       00190299
+          XDECI 2,BUFFER                                                00190399
+          AR    3,2                 CUMALATIVE SUM                      00190499
+          LTR   2,2                 CHECK THE NUMBER IN REG 2           00191199
+*                                                                       00191299
+          BZ    ZERO                BRANCH IF ZERO                      00191399
+          BM    NEGATIVE            BRANCH IF NEGATIVE                  00191499
+          B     POSITIVE            BRANCH IF POSITIVE                  00191599
+*                                                                       00191699
+ZERO      LA    4,1(,4)             ADD 1 RECORD COUNTER                00191799
+          MVC   SIGN(9),SGNZERO                                         00191899
+          XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00191999
+          B     READNEXT            BRANCK TO READ NEXT RECORD          00192199
+*                                                                       00192299
+NEGATIVE  LA    5,1(,5)             ADD 1 RECORD COUNTER                00192399
+          MVC   SIGN(9),SIGNNEG                                         00192499
+          XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00192599
+          CR    2,7                 COMPARE NEW VALUE TO CURRENT LOW    00192799
+          BL    LOADLOW             BRANCH TO LOAD NEW LOWEST VALUE     00192899
+          B     READNEXT            BRANCK TO READ NEXT RECORD          00192999
+LOADLOW   LR    7,2                 LOAD NEW LOWEST # TO R7             00193099
+          B     READNEXT            BRANCK TO READ NEXT RECORD          00193199
+*                                                                       00193299
+POSITIVE  LA    6,1(,6)             ADD 1 RECORD COUNTER                00193399
+          MVC   SIGN(9),SIGNPOS                                         00193499
+          XDECO 2,PRONUM1           WRITES THE NUMBER TO READ           00193599
+          CR    2,8                 COMPARE NEW VALUE TO CURRENT HIGH   00193699
+          BH    LOADHIGH            BRANCH TO LOAD NEW HIGHEST VALUE    00193799
+          B     READNEXT            BRANCK TO READ NEXT RECORD          00193899
+LOADHIGH  LR    8,2                 LOAD NEW HIGHEST # TO R7            00193999
+          B     READNEXT            BRANCK TO READ NEXT RECORD          00194199
+*                                                                       00194299
+READNEXT  XPRNT REPORT2,133         READ NEXT INPUT RECORD              00194399
+*                                                                       00194499
+          XREAD BUFFER,80                                               00194599
+          B     LOOP1         BRANCH TO BEGINNING OF LOOP1              00194699
+*                                                                       00194799
+ENDLOOP1  XPRNT NEWLINE,133   END OF LOOP1 AND PRINTS BLANK LINE        00194899
+          XPRNT TOTAL1,133                                              00196099
+          XPRNT NEWLINE,133         PRINTS BLANK LINE                   00215099
+*                                                                       00240099
+          M     2,=F'1'       ZERO OUT THE EVEN REGISTER                00240199
+          DR    2,9           DIVIDES TO CALC AVERAGE                   00240299
+*                                                                       00241099
+          XDECO 4,ZERONUM           PUT ZERO COUNTER ONTO PRINT LINE    00241399
+          XPRNT ZEROCNT,133         PRINTS THE COUNTER FOR ZERO         00241499
+*                                                                       00241599
+          XDECO 5,LOWNUM            PUT LOWEST COUNTER ONTO PRINT LINE  00241699
+          XPRNT LOWCNT,133          PRINTS THE COUNTER FOR NEG          00241799
+*                                                                       00241899
+          XDECO 6,HIGHNUM           PUT HIGHEST COUNTER ONTO PRINT LINE 00241999
+          XPRNT HIGHCNT,133         PRINTS THE COUNTER FOR POS          00242099
+*                                                                       00242199
+          XPRNT NEWLINE,133         PRINTS BLANK LINE                   00242299
+*                                                                       00242399
+          XDECO 7,NEWLOW            PUT THE LOWEST NUM ONTO PRINT LINE  00242499
+          XPRNT LOW1,133            PRINTS THE LOWEST NUM               00242599
+*                                                                       00242699
+          XDECO 8,NEWHIGH           PUT THE HIGHEST NUM ONTO PRINT LINE 00242799
+          XPRNT HIGH1,133           PRINTS THE HIGHEST NUM              00242899
+*                                                                       00242999
+          XDECO 3,AVG1              PUT THE AVERAGE ONTO PRINT LINE     00243099
+          XPRNT AVERAGE,133         PRINTS THE AVERAGE                  00243199
+*                                                                       00243299
+          XPRNT NEWLINE,133         PRINTS BLANK LIN                    00243399
+*                                                                       00243499
+          BR    14                                                      00243599
+*                                                                       00244099
+          LTORG                                                         00250003
+*                                                                       00251099
+SGNZERO   DC    CL9' ZERO    '                                          00252099
+SIGNNEG   DC    CL9' NEGATIVE'                                          00253099
+SIGNPOS   DC    CL9' POSITIVE'                                          00254099
+LOWEST    DC    X'80000000'                                             00254199
+HIGHEST   DC    X'7FFFFFFF'                                             00254299
+*                                                                       00255099
+BUFFER    DS    CL80          BUFFER FOR THE READ RECORD                00270099
+*                                                                       00280002
+NEWLINE   DC    C'0'          PRINTS BLANK LINE                         00280199
+          DC    132C' '                                                 00280299
+*                                                                       00280399
+REPORT1   DC    C'1'          PRINT ON TOP OF NEXT PAGE                 00281099
+          DC    CL23'**** NUMBER REPORT ****'                           00281299
+          DC    108C' '                                                 00281399
+*                                                                       00281499
+REPORT2   DC    C'0'                                                    00282099
+          DC    CL19'  NUMBER PROCESSED:'                               00282199
+PRONUM1   DS    CL12' '       OUTPUT SPACE FOR NUMBER READ              00282299
+SIGN      DC    CL8' '                                                  00282399
+          DC    93C' '                                                  00282499
+*                                                                       00282599
+TOTAL1    DC    C'1'                                                    00282699
+          DC    CL15'**** TOTAL ****'                                   00282799
+          DC    118C' '                                                 00282899
+*                                                                       00282999
+ZEROCNT   DC    C'0'                                                    00283099
+          DC    CL19'   NUMBER OF ZEROS:'                               00283199
+ZERONUM   DC    CL12' '                                                 00283299
+          DC    103C' '                                                 00283399
+*                                                                       00283499
+LOWCNT    DC    C'0'                                                    00284099
+          DC    CL19'NUMBER OF NEGATIVE:'                               00285099
+LOWNUM    DC    CL12' '                                                 00285199
+          DC    101C' '                                                 00286099
+*                                                                       00286199
+HIGHCNT   DC    C'0'                                                    00286299
+          DC    CL19'NUMBER OF POSITIVE:'                               00286399
+HIGHNUM   DC    CL12' '                                                 00286499
+          DC    101C' '                                                 00286599
+*                                                                       00286699
+LOW1      DC    C'0'                                                    00288099
+          DC    CL19'            L0WEST:'                               00288199
+NEWLOW    DC    CL12' '                                                 00288299
+          DC    101C' '                                                 00288399
+*                                                                       00288499
+HIGH1     DC    C'0'                                                    00288599
+          DC    CL19'           HIGHEST:'                               00288699
+NEWHIGH   DC    CL12' '                                                 00288799
+          DC    101C' '                                                 00288899
+*                                                                       00288999
+AVERAGE   DC    C'0'                                                    00289099
+          DC    CL19'           AVERAGE:'                               00289199
+AVG1      DC    CL12' '                                                 00289299
+          DC    101C' '                                                 00289399
+*                                                                       00289499
+          END   MAIN                                                    00290028
+/*                                                                      00300002
+//*                                                                     00310002
+//FT05F001 DD  *                                                        00320008
+500                                                                     00330099
+23                                                                      00340099
+-45                                                                     00350099
+0                                                                       00360099
+5                                                                       00370099
+-1                                                                      00380099
+324                                                                     00381099
+99999                                                                   00382099
+41                                                                      00383099
+17                                                                      00384099
+0                                                                       00385099
+-2280                                                                   00386099
+-47                                                                     00387099
+ 888                                                                    00388099
+ -35                                                                    00389099
+ 4                                                                      00389199
+ -99                                                                    00389299
+ 0                                                                      00389399
+-66                                                                     00389499
+100                                                                     00389599
+333                                                                     00389699
+95                                                                      00389799
+-59                                                                     00389899
+/*                                                                      00390002
+//                                                                      00400002

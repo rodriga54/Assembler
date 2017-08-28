@@ -1,0 +1,511 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 23.07.13 JOB02041 ---- WEDNESDAY, 05 AUG 2015 ----
+ 23.07.13 JOB02041  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 23.07.13 JOB02041  ICH70001I KC03F7F  LAST ACCESS AT 23:05:02 ON WEDNESDAY, AUGUST 5, 2015
+ 23.07.13 JOB02041  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 23.07.13 JOB02041  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  05 AUG 2015 JOB EXECUTION DATE
+-          400 CARDS READ
+-          511 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           45 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB02041
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                                      
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                               
+         4 //SYSPRINT DD SYSOUT=*                                                          
+         5 //SYSIN    DD *                                                                 
+           //*                                                                             
+         6 //FT05F001  DD DSN=KC02322.CSCI360.DATASU15(DATA9),DISP=SHR                     
+         7 //FT06F001  DD SYSOUT=*                                                         
+           /*                                                                              
+ ICH70001I KC03F7F  LAST ACCESS AT 23:05:02 ON WEDNESDAY, AUGUST 5, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF237I JES2 ALLOCATED TO FT06F001
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB02041.D0000102.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB02041.D0000101.?         SYSIN         
+ IGD104I KC02322.CSCI360.DATASU15                     RETAINED,  DDNAME=FT05F001
+ IEF285I   KC03F7F.KC03F7FA.JOB02041.D0000103.?         SYSOUT        
+ IEF373I STEP/JSTEP01 /START 2015217.2307
+ IEF032I STEP/JSTEP01 /STOP  2015217.2307 
+         CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    12328K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015217.2307
+ IEF033I  JOB/KC03F7FA/STOP  2015217.2307 
+         CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************                        
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *                        
+                                       3 *                                                               *                        
+                                       4 * ASSIGNMENT 9 - EXTERNAL SUBROUTINE                            *                        
+                                       5 *                                                               *                        
+                                       6 * FUNCTION: THIS PROGRAM READS A UNKNOWN NUMBER OF RECORDS AND  *                        
+                                       7 * PACKS / MOVES THEM INTO A TABLE. DSECT'S WILL BE USED TO      *                        
+                                       8 * PROCESS THE RECORDS AND ANOTHER FOR THE TABLE. 4 EXTERNAL     *                        
+                                       9 * SUBROUTINES WILL BE CALLED FIRST BUILD TO BUILD TABLE, PRINT, *                        
+                                      10 * TO PRINT TABLE CURRENTLY STORED IN TABLE, SORT, TO THE TABLE  *                        
+                                      11 * ASCENDING ORDER, AND FINALLY CALL PRINT, TO PRINT NAMES IN    *                        
+                                      12 * ALPHABETICAL ORDER.                                           *                        
+                                      13 *                                                               *                        
+                                      14 * INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF RECOARDS   *                        
+                                      15 * TO BE PROCESSED.                                              *                        
+                                      16 *                                                               *                        
+                                      17 * OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE RECORDS PROCESSED   *                        
+                                      18 * FROM THE INPUT DATA AND CALULATES THE PERCENTAGE FEE BASED ON *                        
+                                      19 * TRANSACTION AMOUNT. SECOND PRINTS THE SAME INFORAMTION AS     *                        
+                                      20 * THE FIRST PRINT EXCEPT IT'S SORTED IN ASCENDING ORDER.        *                        
+                                      21 *                                                               *                        
+                                      22 * REGISTER USAGE:                                               *                        
+                                      23 *               R1 = PARAMTER LIST                              *                        
+                                      24 *               R2 = USED FOR THE PROCESS OF ALL RECORDS        *                        
+                                      25 *               R3 = USED FOR THE END OF TABLE                  *                        
+                                      26 *               R4 = HOLDS LABEL FOR PRINT LINE                 *                        
+                                      27 *                                                               *                        
+                                      28 *****************************************************************                        
+                                      29 *     TABLE ENTRY AN AREA IN STORAGE                            *                        
+                                      30 *****************************************************************                        
+ 000000                               31 $TENTRY   DSECT                                                                          
+ 000000                               32 $TNUM     DS    PL1                                                                      
+ 000001                               33 $TNAME    DS    CL20                                                                     
+ 000015                               34 $TAMT     DS    PL5                                                                      
+                                      35 *TFILL1   DS    PL1                                                                      
+ 00001A                               36 $TPCT1    DS    PL3                                                                      
+                                      37 *TFILL2   DS    PL1                                                                      
+ 00001D                               38 $TPCT2    DS    PL3                                                                      
+                                      39 *****************************************************************                        
+                                      40 *     RECORD AN AREA IN STORAGE                                 *                        
+                                      41 *****************************************************************                        
+ 000000                               42 $RECORD   DSECT                                                                          
+ 000000                               43 $RNUM     DS    CL1                                                                      
+ 000001                               44 $RNAME    DS    CL20                                                                     
+ 000015                               45 $RAMT     DS    CL9                                                                      
+ 00001E                               46 $RFILL1   DS    CL1                                                                      
+ 00001F                               47 $RPCT1    DS    CL5                                                                      
+ 000024                               48 $RFILL2   DS    CL1                                                                      
+ 000025                               49 $RPCT2    DS    CL5                                                                      
+                                      50 *****************************************************************                        
+ 000000                               51 ASSIGN9   CSECT                                                                          
+ 000000 90EC D00C            0000C    52           STM   14,12,12(13)        SAVES ALL CALLING ROUTINES R                         
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000004 18CF                          53           LR    12,15               SETUP BASE REGISTER                                  
+                                      54 *                                                                                        
+ 000000                               55           USING ASSIGN9,12          ESTABLISH BASE REGISTER 12                           
+                                      56 *                                                                                        
+ 000006 41E0 C054            00054    57           LA    14,MAINSAVE         ADDRESS TO ROUTINE'S SAVE AREA                       
+ 00000A 50D0 E004            00004    58           ST    13,4(,14)           SAVE BACKWARD POINTER                                
+ 00000E 50E0 D008            00008    59           ST    14,8(,13)           SAVE FORWARD POINTER                                 
+ 000012 18DE                          60           LR    13,14               LOAD R14 TO R13                                      
+                                      61 *                                                                                        
+                                      62 ********************************************************************                     
+                                      63 *                                                                                        
+ 000014 4110 C3F4            003F4    64           LA    1,PARMS1            R1 = PARMS1                                          
+ 000018 58F0 C048            00048    65           L     15,=V(BUILD)        BRANCH TO BUILD ROUTINE.                             
+ 00001C 05EF                          66           BALR  14,15               ADDRESS OF ROUTINE BEING CALLED                      
+                                      67 *                                                                                        
+                                      68 ********************************************************************                     
+                                      69 *                                                                                        
+ 00001E 4110 C3FC            003FC    70           LA    1,PARMS2            R1 = PARMS2                                          
+ 000022 58F0 C04C            0004C    71           L     15,=V(PRINT)        BRANCH TO PRINT ROUTINE.                             
+ 000026 05EF                          72           BALR  14,15               ADDRESS OF ROUTINE BEING CALLED                      
+                                      73 *                                                                                        
+                                      74 ********************************************************************                     
+                                      75 *                                                                                        
+ 000028 4110 C3F4            003F4    76           LA    1,PARMS1            R1 = PARMS1                                          
+ 00002C 58F0 C050            00050    77           L     15,=V(SORT)         BRANCH TO SORT ROUTINE.                              
+ 000030 05EF                          78           BALR  14,15               ADDRESS OF ROUTINE BEING CALLED                      
+                                      79 *                                                                                        
+                                      80 ********************************************************************                     
+                                      81 *                                                                                        
+ 000032 4110 C408            00408    82           LA    1,PARMS3            R1 = PARMS3                                          
+ 000036 58F0 C04C            0004C    83           L     15,=V(PRINT)        BRANCH TO PRINT ROUTINE.                             
+ 00003A 05EF                          84           BALR  14,15               ADDRESS OF ROUTINE BEING CALLED                      
+                                      85 *                                                                                        
+                                      86 ********************************************************************                     
+                                      87 *         STANDARD EXIT LINKAGE                                                          
+                                      88 ********************************************************************                     
+ 00003C 58D0 D004            00004    89           L     13,4(,13)           LOADS THE ADDRESS OF SAVE AREA                       
+ 000040 98EC D00C            0000C    90           LM    14,12,12(13)        RELOAD REGISTERS EXCEPT R13                          
+ 000044 07FE                          91           BR    14                  BRANCH TO R4                                         
+                                      92 ********************************************************************                     
+                                      93 *               STORAGE FOR THE MAIN DRIVER PROGRAM.                                     
+                                      94 ********************************************************************                     
+                                      95           LTORG                                                                          
+ 000048 00000418                      96                =V(BUILD)                                                                 
+ 00004C 00000520                      97                =V(PRINT)                                                                 
+ 000050 000008B0                      98                =V(SORT)                                                                  
+                                      99 *                                                                                        
+ 000054                              100 MAINSAVE  DS    18F                 SAVE MAIN AREA                                       
+                                     101 *                                                                                        
+ 0000A0                              102           ORG   ASSIGN9+((*-ASSIGN9+31)/32*32)                                           
+ 0000A0 5C5C5C5C5C5C40E3             103           DC    CL32'****** THE TABLE FOLLOWS *******'                                   
+                                     104 *                                                                                        
+ 0000C0                              105 TABLE     DS    25CL32              TABLE SIZE                                           
+ 0003E0 00000000                     106 EOT       DC    F'0'                HOLDS THE LAST ADDRESS OF ENTRY                      
+                                     107 *                                                                                        
+ 0003E4 E4D5E2D6D9E3C5C4             108 UNSORT    DC    CL8'UNSORTED'       HOLDS UNSORTED LABEL                                 
+ 0003EC 40E2D6D9E3C5C440             109 PSORT     DC    CL8' SORTED '       HOLDS SORTED LABEL                                   
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     110 *                                                                                        
+ 0003F4 000000C0000003E0             111 PARMS1    DC    A(TABLE,EOT)        PASSING OF PARAMETERS                                
+ 0003FC 000000C0000003E0             112 PARMS2    DC    A(TABLE,EOT,UNSORT) PASSING OF PARAMETERS                                
+ 000408 000000C0000003E0             113 PARMS3    DC    A(TABLE,EOT,PSORT)  PASSING OF PARAMETERS                                
+                                     114 *                                                                                        
+                                     115 ******************************************************************                       
+                                     116 * NAME: BUILD EXTERNAL SUBROUTINE.                               *                       
+                                     117 *                                                                *                       
+                                     118 * FUNCTION: BUILDS A TABLE FROM INPUT RECORDS                    *                       
+                                     119 *                                                                *                       
+                                     120 * INPUT: PARAMETERS PASSED IN ARE THE TABLE AND EOT.             *                       
+                                     121 *                                                                *                       
+                                     122 * OUTPUT: STORES RECORDS FROM INTO TO A TABLE.                   *                       
+                                     123 *                                                                *                       
+                                     124 * REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *                       
+                                     125 *             2 ADDRESS OF TABLE                                 *                       
+                                     126 *             3 ADDRESS OF ENDOF TABLE                           *                       
+                                     127 *             4 HOLDS MY XREAD CARD                              *                       
+                                     128 *                                                                *                       
+                                     129 ******************************************************************                       
+ 000418                              130 BUILD     CSECT                                                                          
+                                     131 *                                                                                        
+ 000418 90EC D00C            0000C   132           STM   14,12,12(13)         SAVE ALL REGISTERS                                  
+ 00041C 18CF                         133           LR    12,15                SETUP BASE REGISTER                                 
+ 000418                              134           USING BUILD,12             ESTABLISH BASE REGISTER                             
+ 00041E 41E0 C06C            00484   135           LA    14,SAVEB             ADDRESS TO ROUTINE'S SAVE AREA                      
+ 000422 50D0 E004            00004   136           ST    13,4(,14)            SAVE BACKWARD POINTER                               
+ 000426 50E0 D008            00008   137           ST    14,8(,13)            SAVE FORWARD POINTER                                
+ 00042A 18DE                         138           LR    13,14                LOAD R14 TO R13                                     
+                                     139 *                                                                                        
+ 000000                              140           USING $TENTRY,2            TABLE ENTRY                                         
+ 00042C 9823 1000            00000   141           LM    2,3,0(1)             R2 = TABLE                                          
+                                     142 *                                    R3 = EOT                                            
+                                     143 *                                                                                        
+ 000430 4140 C0B4            004CC   144           LA    4,CARD               R4 -> CARD                                          
+ 000000                              145           USING $RECORD,4            ADDRESSABILITY FOR $RECORD DSECT                    
+                                     146 *                                                                                        
+ 000434 E000 C0B4 0050 004CC         147           XREAD CARD,80              READS IN FIRST RECORD                               
+                                     148 *                                                                                        
+ 00043A 4770 C052            0046A   149 LOOP1     BNZ   ENDLOOP1             BRANCH IF NOT ZERO                                  
+                                     150 *                                                                                        
+ 00043E F200 2000 4000 00000 00000   151           PACK  $TNUM(1),$RNUM(1)                                                        
+ 000444 D213 2001 4001 00001 00001   152           MVC   $TNAME(20),$RNAME     MOVING NAME TO TABLE                               
+ 00044A F248 2015 4015 00015 00015   153           PACK  $TAMT(5),$RAMT(9)     PACK THE AMOUNT                                    
+ 000450 F224 201A 401F 0001A 0001F   154           PACK  $TPCT1(3),$RPCT1(5)   PACK THE 1ST PERCENTAGE                            
+ 000456 F224 201D 4025 0001D 00025   155           PACK  $TPCT2(3),$RPCT2(5)   PACK THE 2ND PERCENTAGE                            
+                                     156 *                                                                                        
+ 00045C 4120 2020            00020   157           LA    2,32(,2)             INCREMENT TO NEXT TABLE RECORD                      
+ 000460 E000 C0B4 0050 004CC         158           XREAD CARD,80              READ IN NEXT RECORD                                 
+                                     159 *                                                                                        
+ 000466 47F0 C022            0043A   160           B     LOOP1                BRANCH TO LOOP1                                     
+                                     161 *                                                                                        
+ 00046A                              162           DROP  2,4                  DROP BOTH $TENTRY & $RECORD                         
+                                     163 *                                                                                        
+ 00046A 5B20 C068            00480   164 ENDLOOP1  S     2,=F'32'                                                                 
+ 00046E 5023 0000            00000   165           ST    2,0(3)               STORE REGISTER                                      
+ 000472 58D0 D004            00004   166           L     13,4(,13)            ADDRESS OF SAVE BUILD                               
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000476 98EC D00C            0000C   167           LM    14,12,12(13)         RESTORE ROUTINES REGISTERS                          
+ 00047A 07FE                         168           BR    14                   BRANCH TO REGISTER 14                               
+                                     169 *                                                                                        
+                                     170 *********************    BUILD STORAGE   *************************                       
+                                     171 *                                                                                        
+                                     172           LTORG                                                                          
+ 000480 00000020                     173                =F'32'                                                                    
+                                     174 *                                                                                        
+ 000484                              175 SAVEB     DS    18F                  SAVE BUILD ROUTINE                                  
+ 0004CC                              176 CARD      DS    CL80                 CARDS OF RECORDS                                    
+ 00051C 5B                           177           DC    C'$'                                                                     
+                                     178 *                                                                                        
+                                     179 ******************************************************************                       
+                                     180 * NAME: PRINT EXTERNAL SUBROUTINE.                               *                       
+                                     181 *                                                                *                       
+                                     182 * FUNCTION: PRINTS WHAT IS STORED IN THE TABLE                   *                       
+                                     183 *                                                                *                       
+                                     184 * INPUT: PARAMETERS PASSED IN ARE THE TABLE, EOT, AND LABEL      *                       
+                                     185 *                                                                *                       
+                                     186 * OUTPUT: PRINTS TABLE UNKNOWN NUMBER OF ENTRIES. DETERMINES IF  *                       
+                                     187 * PERSON IS LONG OR SHORT TERM BASED OFF OF FIRST PACKED ENTRY.  *                       
+                                     188 * ALSO DETERMINES WHICH FEE PERCENTAGE BASED ON THE TRANSACTION  *                       
+                                     189 * AMOUNT TO BE CALCULATED. THEN PRINTS ALL INFO ON PRINT LINE.   *                       
+                                     190 *                                                                *                       
+                                     191 * REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *                       
+                                     192 *             2 ADDRESS OF TABLE                                 *                       
+                                     193 *             3 ADDRESS OF ENDOF TABLE                           *                       
+                                     194 *             4 HOLDS LABEL FOR PRINT LINE                       *                       
+                                     195 *                                                                *                       
+                                     196 ******************************************************************                       
+ 000520                              197 PRINT     CSECT                                                                          
+                                     198 *                                                                                        
+ 000520 90EC D00C            0000C   199           STM   14,12,12(13)         SAVE ALL REGISTERS                                  
+ 000524 18CF                         200           LR    12,15                SETUP BASE REGISTER                                 
+ 000520                              201           USING PRINT,12             ESTABLIISH BASE REGISTER                            
+ 000526 41E0 C110            00630   202           LA    14,SAVEP             ADDRESS TO ROUTINE'S SAVE AREA                      
+ 00052A 50D0 E004            00004   203           ST    13,4(,14)            SAVE BACKWARD POINTER                               
+ 00052E 50E0 D008            00008   204           ST    14,8(,13)            SAVE FORWARD POINTER                                
+ 000532 18DE                         205           LR    13,14                LOAD R14 TO R13                                     
+                                     206 *                                                                                        
+ 000534 9824 1000            00000   207           LM    2,4,0(1)             R2 = TABLE                                          
+                                     208 *                                    R3 = EOT                                            
+                                     209 *                                    R4 = SORTED OR UNSORTED                             
+ 000538 5830 3000            00000   210           L     3,0(,3)              R3 -> LAST TABLE ENTRY                              
+                                     211 *                                                                                        
+ 000000                              212           USING $TENTRY,2            DEFINE USE OF TABLE EN                              
+ 00053C D207 C1B0 4000 006D0 00000   213           MVC   PTYPE(8),0(4)        MOVES TYPE TO PRINTLINE                             
+ 000542 E020 C0FA 0001 0061A         214           XPRNT =C' ',1              ADDS BLANK LINE                                     
+ 000548 E020 C17A 0085 0069A         215           XPRNT HEADER1,133          PRINTS HEADER TYPE                                  
+ 00054E E020 C0FA 0001 0061A         216           XPRNT =C' ',1              ADDS BLANK LINE                                     
+ 000554 E020 C200 0085 00720         217           XPRNT HEADER2,133          PRINT COLUMN HEADERS                                
+ 00055A E020 C282 0085 007A2         218           XPRNT HEADER3,133          PRINTS A '-' LINE                                   
+                                     219 *                                                                                        
+ 000560 1923                         220 LOOP3     CR    2,3                  COMPARE REGISTERS 2 & 3                             
+ 000562 4720 C0E0            00600   221           BH    ENDLOOP3             ENDLOOP3                                            
+                                     222 *                                                                                        
+ 000566 F900 2000 C0FB 00000 0061B   223 LOOP4     CP    $TNUM,=PL1'2'        COMPARES TYPE WITH # 2                              
+1                                                                                                               PAGE    5         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00056C 4780 C05A            0057A   224           BE    SHORTTPE             BRANCH TO SHORT-TERM                                
+ 000570 D209 C309 C162 00829 00682   225           MVC   PNTTYPE(10),LONG     MOVE LONG-TERM TO PRINTLINE                         
+ 000576 47F0 C060            00580   226           B     ENDLOOP4             BRANCH TO ENDLOOP4                                  
+ 00057A D209 C309 C158 00829 00678   227 SHORTTPE  MVC   PNTTYPE(10),SHORT    MOVE SHORT-TERM TO PRINTLINE                        
+ 000580 D213 C328 2001 00848 00001   228 ENDLOOP4  MVC   PNTNAME(20),$TNAME   MOVE NAME TO PRINTLINE                              
+                                     229 *                                                                                        
+ 000586 4110 C354            00874   230           LA    1,PNTAMT+9           IF ZERO THEN PRINT A ZERO                           
+ 00058A D20C C34B C0FC 0086B 0061C   231           MVC   PNTAMT(13),=XL13'40206B2020206B2021204B2020'                             
+ 000590 DF0C C34B 2015 0086B 00015   232           EDMK  PNTAMT(13),$TAMT     MOVE NUMBERS TO PRINT LINE                          
+ 000596 0610                         233           BCTR  1,0                  DECREMENTS BY 1                                     
+ 000598 925B 1000      00000         234           MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS                               
+ 00059C                              235           DS    0H                                                                       
+                                     236 *                                                                                        
+                                     237 *******     CALCULATION OF LOW % FEE   ***************                                   
+                                     238 *                                                                                        
+ 00059C F874 C172 2015 00692 00015   239           ZAP   FEE(8),$TAMT         ZAP TANSACTION TO FEE                               
+ 0005A2 F945 2015 C16C 00015 0068C   240 LOOP2     CP    $TAMT,FEECALC        COMPARE TO LARGEST NUMBER POSSIBLE                  
+ 0005A8 4720 C0C8            005E8   241           BH    HIGHFEE              BRANCH HIGH                                         
+ 0005AC FC72 C172 201A 00692 0001A   242           MP    FEE(8),$TPCT1        MULTIPLY PRCT AND AMOUNT                            
+ 0005B2 F070 C172 0004 00692 00004   243 NEXT      SRP   FEE(8),4,0           SHIFT & ROUND DECIMAL                               
+                                     244 *                                                                                        
+ 0005B8 4110 C386            008A6   245           LA    1,PNTFEE+6           IF ZERO THEN PRINT A ZERO                           
+ 0005BC D209 C380 C0F0 008A0 00610   246           MVC   PNTFEE(10),=XL10'4020206B2021204B2020'                                   
+ 0005C2 DF09 C380 C172 008A0 00692   247           EDMK  PNTFEE(10),FEE       EDIT MARK FEE                                       
+ 0005C8 0610                         248           BCTR  1,0                  DECREMENTS BY 1                                     
+ 0005CA 925B 1000      00000         249           MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS                               
+ 0005CE                              250           DS    0H                                                                       
+                                     251 *                                                                                        
+ 0005CE 4110 C371            00891   252           LA    1,PNTPCT+8           IF ZERO THEN PRINT A ZERO                           
+ 0005D2 D206 C369 C109 00889 00629   253           MVC   PNTPCT(7),=XL7'402021204B2020'                                           
+ 0005D8 DF06 C369 201A 00889 0001A   254           EDMK  PNTPCT(7),$TPCT1     EDIT MARK PERCENT                                   
+ 0005DE 0610                         255           BCTR  1,0                  DECREMENTS BY 1                                     
+ 0005E0 926C 1000      00000         256           MVI   0(1),C'%'            MOVE $ TO ALL NUMBERS                               
+                                     257 *                                                                                        
+ 0005E4 47F0 C0D2            005F2   258           B     ENDLOOP2             BRANCH TO ENDLOOP2                                  
+                                     259 *                                                                                        
+                                     260 *******    CALCULATION OF HIGH % FEE     ***********                                     
+                                     261 *                                                                                        
+ 0005E8 FC72 C172 201D 00692 0001D   262 HIGHFEE   MP    FEE(8),$TPCT2        MULTIPLY PRCT AND AMOUNT                            
+ 0005EE 47F0 C092            005B2   263           B     NEXT                                                                     
+                                     264 *                                                                                        
+ 0005F2 E020 C308 0085 00828         265 ENDLOOP2  XPRNT PLINE,133            PRINT LINE POINTER TO NEXT ENTRY                    
+                                     266 *                                                                                        
+ 0005F8 4120 2020            00020   267           LA    2,32(,2)             INCREMENT POINTER TO NEXT ENTRY                     
+ 0005FC 47F0 C040            00560   268           B     LOOP3                BRANCH TO TOP OF LOOOP3                             
+                                     269 *                                                                                        
+ 000600                              270           DROP  2                    DROP $TENTRY                                        
+                                     271 *                                                                                        
+ 000600 58D0 D004            00004   272 ENDLOOP3  L     13,4(,13)            ADDRESS OF SAVE AREA                                
+ 000604 98EC D00C            0000C   273           LM    14,12,12(13)         RESTORE REGISTERS                                   
+                                     274 *                                                                                        
+ 000608 07FE                         275           BR    14                   BRANCH TO REGISTER 14                               
+                                     276 *                                                                                        
+                                     277 *********************  PRINT STORAGE   **************************                        
+                                     278 *                                                                                        
+                                     279           LTORG                                                                          
+ 000610 4020206B2021204B             280                =XL10'4020206B2021204B2020'                                               
+1                                                                                                               PAGE    6         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00061A 40                           281                =C' '                                                                     
+ 00061B 2C                           282                =PL1'2'                                                                   
+ 00061C 40206B2020206B20             283                =XL13'40206B2020206B2021204B2020'                                         
+ 000629 402021204B2020               284                =XL7'402021204B2020'                                                      
+                                     285 *                                                                                        
+ 000630                              286 SAVEP     DS    18F                  SAVE PRINT                                          
+                                     287 *                                                                                        
+ 000678 E2C8D6D9E360E3E8             288 SHORT     DC    CL10'SHORT-TYPE'     DECLARE SHORT-TYPE                                  
+ 000682 D3D6D5C760E3E8D7             289 LONG      DC    CL10'LONG-TYPE '     DECLARE LONG-TYPE                                   
+                                     290 *                                                                                        
+ 00068C 00000999999C                 291 FEECALC   DC    PL6'999999'          SETS THE FUND FEE CALCULATION                       
+ 000692 000000000000000C             292 FEE       DC    PL8'0'                                                                   
+                                     293 *                                                                                        
+ 00069A F1                           294 HEADER1   DC    C'1'                 HEADER WITH CC ON TOP OF PAGE                       
+ 00069B 4040404040404040             295           DC    CL49' '                                                                  
+ 0006CC E3C8C540                     296           DC    C'THE '                                                                  
+ 0006D0 4040404040404040             297 PTYPE     DC    CL8' '                                                                   
+ 0006D8 40C3E4E2E3D6D4C5             298           DC    C' CUSTOMER FUND FEE DATA'                                               
+ 0006EF 4040404040404040             299           DC    49C' '                                                                   
+                                     300 *                                                                                        
+ 000720 F1                           301 HEADER2   DC    C'1'                 PRINS COLUMN NAMES                                  
+ 000721 E3E8D7C5                     302           DC    CL4'TYPE'                                                                
+ 000725 4040404040404040             303           DC    CL27' '                                                                  
+ 000740 D5C1D4C5                     304           DC    CL4'NAME'                                                                
+ 000744 4040404040404040             305           DC    CL31' '                                                                  
+ 000763 E3D9C1D5E2C1C3E3             306           DC    CL18'TRANSACTION AMOUNT'                                                 
+ 000775 4040404040404040             307           DC    CL12' '                                                                  
+ 000781 D7C5D9C3C5D5E340             308           DC    CL11'PERCENT FEE'                                                        
+ 00078C 4040404040404040             309           DC    CL12' '                                                                  
+ 000798 C6C5C540C1D4D6E4             310           DC    CL10'FEE AMOUNT'                                                         
+                                     311 *                                                                                        
+ 0007A2 F0                           312 HEADER3   DC    C'0'                 PRINTS HEADER3                                      
+ 0007A3 6060606060606060             313           DC    CL48'------------------------------------------------'                   
+ 0007D3 6060606060606060             314           DC    CL48'------------------------------------------------'                   
+ 000803 6060606060606060             315           DC    CL37'-------------------------------------'                              
+                                     316 *                                                                                        
+ 000828 F0                           317 PLINE     DC    C'0'                 HOLDS THE VALUES TO BE PRINTED                      
+ 000829 4040404040404040             318 PNTTYPE   DC    CL10' '              HOLD THE TYPE                                       
+ 000833 4040404040404040             319           DC    CL21' '                                                                  
+ 000848 4040404040404040             320 PNTNAME   DC    CL13' '              HOLDS THE NAME                                      
+ 000855 4040404040404040             321           DC    CL22' '                                                                  
+ 00086B 4040404040404040             322 PNTAMT    DC    CL9' '               HOLDS THE AMOUNT                                    
+ 000874 4040404040404040             323           DC    CL21' '                                                                  
+ 000889 4040404040                   324 PNTPCT    DC    CL5' '               HOLDS THE PERCENT                                   
+ 00088E 4040404040404040             325           DC    CL18' '                                                                  
+ 0008A0 4040404040404040             326 PNTFEE    DC    CL10' '              HOLDS THE FEE                                       
+                                     327 *                                                                                        
+                                     328 ******************************************************************                       
+                                     329 * NAME: SORT EXTERNAL SUBROUTINE.                                *                       
+                                     330 *                                                                *                       
+                                     331 * FUNCTION: SORTS A TABLE IN ASCENDING ORDER USING THE SELECTION *                       
+                                     332 *           SORT.                                                *                       
+                                     333 *                                                                *                       
+                                     334 * INPUT: PARAMETERS PASSED IN ARE THE TABLE AND EOT              *                       
+                                     335 *                                                                *                       
+                                     336 * OUTPUT: TABLE SORTED ASCENDING ORDER.                          *                       
+                                     337 *                                                                *                       
+1                                                                                                               PAGE    7         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                     338 * REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *                       
+                                     339 *             2 ADDRESS OF TABLE                                 *                       
+                                     340 *             3 ADDRESS OF ENDOF TABLE                           *                       
+                                     341 *             4 HOLDS ADDRESS OF LOWEST TABLE ELEMENT            *                       
+                                     342 *             5 ADDRESS TABLE COUNTER                            *                       
+                                     343 *                                                                *                       
+                                     344 ******************************************************************                       
+                                     345 *                                                                                        
+ 0008B0                              346 SORT      CSECT                                                                          
+                                     347 *                                                                                        
+ 0008B0 90EC D00C            0000C   348           STM   14,12,12(13)         SAVE ALL REGISTERS                                  
+ 0008B4 18CF                         349           LR    12,15                SETUP BASE REGISTER                                 
+ 0008B0                              350           USING SORT,12              ESTABLIISH BASE REGISTER                            
+ 0008B6 41E0 C068            00918   351           LA    14,SORTSAVE          ADDRESS TO ROUTINE'S SAVE AREA                      
+ 0008BA 50D0 E004            00004   352           ST    13,4(,14)            SAVE BACKWARD POINTER                               
+ 0008BE 50E0 D008            00008   353           ST    14,8(,13)            SAVE FORWARD POINTER                                
+ 0008C2 18DE                         354           LR    13,14                LOAD R14 TO R13                                     
+                                     355 *                                                                                        
+ 0008C4 9823 1000            00000   356           LM    2,3,0(1)             LOAD PARAMETER LIST                                 
+                                     357 *                                                                                        
+ 0008C8 5830 3000            00000   358           L     3,0(,3)              R3 -> LAST TABLE ENTRY                              
+                                     359 ***********************  SELECTION SORT  ************************                        
+                                     360 *                                                                                        
+ 0008CC 1923                         361 DO1       CR    2,3                                                                      
+ 0008CE 47B0 C05C            0090C   362           BNL   ENDDO1               BRANCH TO ENDDO1                                    
+                                     363 *                                                                                        
+ 0008D2 1842                         364           LR    4,2                  LOAD R2 TO R4                                       
+ 0008D4 4150 4020            00020   365           LA    5,32(,4)             LOADING NEXT LINE IN R5                             
+                                     366 *                                                                                        
+ 0008D8 1953                         367 DO2       CR    5,3                  COMPARE R5 TO R3                                    
+ 0008DA 4720 C042            008F2   368           BH    ENDDO2               BRANCH HIGH ENDDO2                                  
+                                     369 *                                                                                        
+ 0008DE D513 5001 4001 00001 00001   370 IF1       CLC   1(20,5),1(4)         COMPARE LOGIC IF SMALLER                            
+ 0008E4 47B0 C03A            008EA   371           BNL   ENDIF1               BRANCH TO ENDIF1                                    
+ 0008E8 1845                         372           LR    4,5                  LOAD R4 TO R5                                       
+ 0008EA                              373 ENDIF1    DS    0H                   ENDIF1                                              
+ 0008EA 4150 5020            00020   374           LA    5,32(,5)             NEXT LINE                                           
+ 0008EE 47F0 C028            008D8   375           B     DO2                  BRANCH TO DO2                                       
+                                     376 *                                                                                        
+ 0008F2                              377 ENDDO2    DS    0H                   ENDDO2                                              
+                                     378 *                                                                                        
+ 0008F2 D21F C0B0 2000 00960 00000   379           MVC   SWAP(32),0(2)        MOVE TO TEMP SWAP AREA                              
+ 0008F8 D21F 2000 4000 00000 00000   380           MVC   0(32,2),0(4)         MOVE NEW LOW TO TABLE                               
+ 0008FE D21F 4000 C0B0 00000 00960   381           MVC   0(32,4),SWAP         MOVE CONTENT FROM STORAGE TO R4                     
+ 000904 4120 2020            00020   382           LA    2,32(,2)             NEXT TABLE ENTRY                                    
+                                     383 *                                                                                        
+ 000908 47F0 C01C            008CC   384           B     DO1                  INCREMENT TOP BY 1                                  
+ 00090C                              385 ENDDO1    DS    0H                   END DO1                                             
+ 00090C 58D0 D004            00004   386           L     13,4(,13)            ADDRESS OF SAVE AREA                                
+ 000910 98EC D00C            0000C   387           LM    14,12,12(13)         RESTORE REGISTERS                                   
+                                     388 *                                                                                        
+ 000914 07FE                         389           BR    14                   BRANCH TO REGISTER 14                               
+                                     390 *                                                                                        
+                                     391 *********************   SORT STORAGE   **************************                        
+                                     392 *                                                                                        
+                                     393           LTORG                                                                          
+                                     394 *                                                                                        
+1                                                                                                               PAGE    8         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000918                              395 SORTSAVE  DS    18F                  SORT SAVE AREA                                      
+ 000960                              396 SWAP      DS    CL32                 STORAGE TO SWAP LINES                               
+                                     397 *                                                                                        
+                                     398 ******************************************************************                       
+                                     399           END   ASSIGN9                                                                  
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:   20592 HIGH:    1864 LEAVING:  471112 FREE BYTES. AVERAGE:       56 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.002 SECS,   200000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+                                                                                                                                  
+1                                                 THE UNSORTED CUSTOMER FUND FEE DATA                                             
+                                                                                                                                  
+1TYPE                           NAME                               TRANSACTION AMOUNT            PERCENT FEE            FEE AMOUNT
+0---------------------------------------------------------------------------------------------------------------------------------
+0SHORT-TYPE                     MOZART, W. A.                            $600.45                    1.25%                    $7.50
+0LONG-TYPE                      BEETHOVEN, L. VAN                     $23,800.77                    0.75%                  $273.70
+0SHORT-TYPE                     BRUCKNER, A.                               $0.39                    1.15%                    $0.00
+0LONG-TYPE                      SMETANA, B.                            $1,210.97                    1.35%                   $16.34
+0LONG-TYPE                      DVORAK, A.                            $27,799.50                    2.75%                  $820.08
+0SHORT-TYPE                     REVUELTAS, S.                            $345.67                    1.15%                    $3.97
+0LONG-TYPE                      TSCHAIKOWSKY, P.                         $500.03                    3.25%                   $16.25
+0SHORT-TYPE                     BRAHMS, J.                             $5,430.00                    1.15%                   $62.44
+0SHORT-TYPE                     BACH, J. S.                            $8,800.92                    3.50%                  $308.03
+0LONG-TYPE                      BARBER, S.                           $105,612.34                    1.25%                $2,640.30
+0SHORT-TYPE                     JOCHUM, E.                                $56.09                    1.25%                    $0.70
+0LONG-TYPE                      WAND, G.                                 $500.03                    3.25%                   $16.25
+0SHORT-TYPE                     FRICSAY, F.                            $5,430.00                    1.15%                   $62.44
+0LONG-TYPE                      BERNSTEIN, L.                          $8,800.92                    3.50%                  $308.03
+0LONG-TYPE                      KARAJAN, H. VON                      $105,612.34                    2.25%                $2,640.30
+0LONG-TYPE                      KUBELIK, R.                               $56.09                    1.25%                    $0.70
+                                                                                                                                  
+1                                                 THE  SORTED  CUSTOMER FUND FEE DATA                                             
+                                                                                                                                  
+1TYPE                           NAME                               TRANSACTION AMOUNT            PERCENT FEE            FEE AMOUNT
+0---------------------------------------------------------------------------------------------------------------------------------
+0SHORT-TYPE                     BACH, J. S.                            $8,800.92                    3.50%                  $308.03
+0LONG-TYPE                      BARBER, S.                           $105,612.34                    1.25%                $2,640.30
+0LONG-TYPE                      BEETHOVEN, L. VAN                     $23,800.77                    0.75%                  $273.70
+0LONG-TYPE                      BERNSTEIN, L.                          $8,800.92                    3.50%                  $308.03
+0SHORT-TYPE                     BRAHMS, J.                             $5,430.00                    1.15%                   $62.44
+0SHORT-TYPE                     BRUCKNER, A.                               $0.39                    1.15%                    $0.00
+0LONG-TYPE                      DVORAK, A.                            $27,799.50                    2.75%                  $820.08
+0SHORT-TYPE                     FRICSAY, F.                            $5,430.00                    1.15%                   $62.44
+0SHORT-TYPE                     JOCHUM, E.                                $56.09                    1.25%                    $0.70
+0LONG-TYPE                      KARAJAN, H. VON                      $105,612.34                    2.25%                $2,640.30
+0LONG-TYPE                      KUBELIK, R.                               $56.09                    1.25%                    $0.70
+0SHORT-TYPE                     MOZART, W. A.                            $600.45                    1.25%                    $7.50
+0SHORT-TYPE                     REVUELTAS, S.                            $345.67                    1.15%                    $3.97
+0LONG-TYPE                      SMETANA, B.                            $1,210.97                    1.35%                   $16.34
+0LONG-TYPE                      TSCHAIKOWSKY, P.                         $500.03                    3.25%                   $16.25
+0LONG-TYPE                      WAND, G.                                 $500.03                    3.25%                   $16.25
+0*** EXECUTION TIME =    0.002 SECS.      2127 INSTRUCTIONS EXECUTED -  1063500 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

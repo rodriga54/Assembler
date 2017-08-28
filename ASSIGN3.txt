@@ -1,0 +1,208 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 22.07.41 JOB05335 ---- TUESDAY,   07 JUL 2015 ----
+ 22.07.41 JOB05335  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 22.07.41 JOB05335  ICH70001I KC03F7F  LAST ACCESS AT 22:05:02 ON TUESDAY, JULY 7, 2015
+ 22.07.41 JOB05335  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 22.07.41 JOB05335  -                                         --TIMINGS (MINS.)--            ----PAGING COUNTS---
+ 22.07.41 JOB05335  -JOBNAME  STEPNAME PROCSTEP    RC   EXCP    TCB    SRB  CLOCK   SERV  PG   PAGE   SWAP    VIO SWAPS
+ 22.07.41 JOB05335  -KC03F7FA                      00     51 ******    .00     .0    112   0      0      0      0     0
+ 22.07.41 JOB05335  -KC03F7FA ENDED.  NAME-ABRAHAM RODRIGUEZ    TOTAL TCB CPU TIME=   .00  TOTAL ELAPSED TIME=    .0
+ 22.07.41 JOB05335  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  07 JUL 2015 JOB EXECUTION DATE
+-          111 CARDS READ
+-          208 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           20 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB05335
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00020000
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN    DD *                                                         00050000
+           //*                                                                     00310002
+         6 //FT05F001 DD  *                                                        00320008
+ ICH70001I KC03F7F  LAST ACCESS AT 22:05:02 ON TUESDAY, JULY 7, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF237I JES2 ALLOCATED TO FT05F001
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB05335.D0000103.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB05335.D0000101.?         SYSIN         
+ IEF285I   KC03F7F.KC03F7FA.JOB05335.D0000102.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015188.2207
+ IEF032I STEP/JSTEP01 /STOP  2015188.2207 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11724K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015188.2207
+ IEF033I  JOB/KC03F7FA/STOP  2015188.2207 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00114099         
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *       00115099         
+                                       3 *                                                               *       00115199         
+                                       4 * ASSIGNMENT 3 - LOOPING, XREAD & XPRNT                         *       00115299         
+                                       5 *                                                               *       00116099         
+                                       6 * FUNCTION: THIS PROGRAM READS IN AN UNKNOWN NUMBER OF 2-DIGIT  *       00117099         
+                                       7 * NUMBERS, 3 PER LINE. FOR EACH RECORD PRINT OUT THE NUMBERS    *       00118099         
+                                       8 * AND SUM OF ALL NUMBERS ON THE LINE (RECORD). ALSO SUM A GRAND *       00118199         
+                                       9 * TOTAL AND SUMS OF ALL THE RECORDS.                            *       00118299         
+                                      10 *                                                               *       00118399         
+                                      11 * INPUT: THE INPUT LINE CONTIANS 6 RECORDS WITH 3 2-DIGIT NUMBER*       00119099         
+                                      12 *                                                               *       00119199         
+                                      13 * OUTPUT: PRINTS THE ALL THE INPUT DATA SUMS EACH RECORD. ONCE  *       00119299         
+                                      14 * THE DATA REACHES THE END OF FILE A NEW LINE PRINTS THE TATAL  *       00119399         
+                                      15 * RECORDS AND SUMS THE GRAND TOTAL OF OF EACH RECORD.           *       00119499         
+                                      16 *                                                               *       00119599         
+                                      17 * REGISTER USAGE:                                               *       00119699         
+                                      18 *               R3 = USED FOR                                   *       00119899         
+                                      19 *               R4 = USED FOR A COUNTER                         *       00119999         
+                                      20 *               R5 = USED FOR THE GRAND TOTAL SUM               *       00120099         
+                                      21 *               R6 = USED FOR THE ROW SUM                       *       00120199         
+                                      22 *               R7 = SET TO 1 FOR COUNTER                       *       00120299         
+                                      23 *                                                               *       00120399         
+                                      24 * NOTES:                                                        *       00120999         
+                                      25 *                                                               *       00121099         
+                                      26 *****************************************************************       00121199         
+ 000000                               27 MAIN      CSECT                                                         00130001         
+ 000000                               28           USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099         
+                                      29 *                                                                       00150002         
+ 000000 1B44                          30           SR    4,4                 SET R4 = 0                          00150199         
+ 000002 1B55                          31           SR    5,5                 SET R5 = 0                          00150299         
+ 000004 E000 F0E1 0050 000E1          32           XREAD BUFFER,80           READ FIRST RECORD                   00151099         
+                                      33 *                                                                       00152002         
+ 00000A 4770 F04A            0004A    34 LOOP1     BC    B'0111',ENDLOOP1    EOF BRANCH IF YES.                  00160099         
+                                      35 *                                   START OF COLUMN 1                   00170099         
+ 00000E 1B66                          36           SR    6,6                 RESETS THE SUM = 0                  00180099         
+                                      37 *                                                                       00190099         
+ 000010 5330 F0E1            000E1    38           XDECI 3,BUFFER      R3 = HOLDS THE FIRST COLUMN               00191073         
+ 000014 5230 F132            00132    39           XDECO 3,OCOL1       CONVERTS TO BASE 10                       00192099         
+ 000018 1A63                          40           AR    6,3           ACCUMULATING SUM                          00192199         
+                                      41 *                                                                       00192299         
+                                      42 *                             START OF COLUMN 2                         00192399         
+ 00001A 5330 1000            00000    43           XDECI 3,0(,1)       R3 = HOLDS THE SECOND COLUMN              00193099         
+ 00001E 5230 F146            00146    44           XDECO 3,OCOL2       CONVERTS TO BASE 10                       00193199         
+ 000022 1A63                          45           AR    6,3           ACCUMULATING SUM                          00193399         
+                                      46 *                                                                       00193499         
+                                      47 *                             START OF COLUMN 3                         00193599         
+ 000024 5330 1000            00000    48           XDECI 3,0(,1)       R3 = HOLDS THE THIRD COLUMN               00193799         
+ 000028 5230 F15A            0015A    49           XDECO 3,OCOL3       CONVERTS TO BASE 10                       00193899         
+ 00002C 1A63                          50           AR    6,3           ACCUMULATING THE SUM                      00194099         
+                                      51 *                                                                       00195023         
+ 00002E 5260 F17E            0017E    52           XDECO 6,OTOTAL1     SUBTOTAL PER ROW                          00195199         
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                      53 *                                                                       00196011         
+ 000032 5870 F058            00058    54           L     7,COUNTER     LOADS 1 TO BEGIN COUNTER                  00213099         
+ 000036 1A47                          55           AR    4,7           COUNTER FOR RECORDS                       00214099         
+ 000038 1A56                          56           AR    5,6           ADDS THE GRAND TOTAL                      00214399         
+                                      57 *                                                                       00214499         
+ 00003A E020 F131 0085 00131          58           XPRNT PRINT1,133    PRINTS ROW WITH SUM                       00214599         
+ 000040 E000 F0E1 0050 000E1          59           XREAD BUFFER,80     READS THE NEXT RECORD                     00214699         
+                                      60 *                                                                       00215033         
+ 000046 47F0 F00A            0000A    61           BC    B'1111',LOOP1    BRANCH TO BEGINNING OF LOOP            00220099         
+                                      62 *                                                                       00230399         
+ 00004A 5240 F071            00071    63 ENDLOOP1  XDECO 4,RECORDS     END OF LOOP1 AND CONVERTS R4 TO BASE 1    00231099         
+                                      64 *                                                                       00240099         
+ 00004E 5250 F0A9            000A9    65           XDECO 5,OTOTAL2     CONVERTS R5 TO BASE 10                    00240299         
+ 000052 E020 F05C 0085 0005C          66           XPRNT SUMMARY,133   PRINTS THE SUMMARY                        00241099         
+                                      67 *                                                                       00242099         
+                                      68           LTORG                                                         00250003         
+                                      69 *                                                                       00251099         
+ 000058 00000001                      70 COUNTER   DC    F'1'     INITIALIZE COUNTER = 1                         00252099         
+                                      71 *                                                                       00260002         
+ 00005C F0                            72 SUMMARY   DC    C'0'     BUFFER FOR THE RECORD SUMMARY                  00261099         
+ 00005D 404040404040                  73           DC    6C' '                                                   00261199         
+ 000063 407B40D6C640D9C5              74           DC    CL14' # OF RECORDS: '                                   00262099         
+ 000071                               75 RECORDS   DS    CL12     HOLDS THE NUMBER OF RECORDS                    00263099         
+ 00007D 4040404040404040              76           DC    31C' '                                                  00264099         
+ 00009C C7D9C1D5C440E3D6              77           DC    CL13'GRAND TOTAL: '                                     00265099         
+ 0000A9                               78 OTOTAL2   DS    CL12     HOLDS THE TOTAL SUM                            00266099         
+ 0000B5 4040404040404040              79           DC    44C' '                                                  00266199         
+                                      80 *                                                                       00267099         
+ 0000E1                               81 BUFFER    DS    CL80     BUFFER FOR THE READ RECORD                     00270003         
+                                      82 *                                                                       00280002         
+ 000131 F0                            83 PRINT1    DC    C'0'     DOUBLE SPACE CARRIAGE CONTROL                  00281012         
+                                      84 *         DC    8C' '                                                   00281199         
+ 000132                               85 OCOL1     DS    CL12     HOLDS DATA FROM COLUMN 1                       00282099         
+ 00013E 4040404040404040              86           DC    8C' '                                                   00282199         
+ 000146                               87 OCOL2     DS    CL12     HOLDS DATA FROM COLUMN 2                       00283099         
+ 000152 4040404040404040              88           DC    8C' '                                                   00283199         
+ 00015A                               89 OCOL3     DS    CL12     HOLDS DATA FROM COLUMN 3                       00284099         
+ 000166 4040404040404040              90           DC    12C' '                                                  00284199         
+ 000172 40D9D6E640E2E4D4              91           DC    CL12' ROW SUM IS '                                      00284299         
+                                      92 *         DC    8C' '                                                   00284399         
+ 00017E                               93 OTOTAL1   DS    CL12     HOLDS THE SUM OF EACH ROW                      00284499         
+ 00018A 4040404040404040              94           DC    132C' '                                                 00286099         
+                                      95 *                                                                       00287012         
+                                      96           END   MAIN                                                    00290028         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    4344 HIGH:     584 LEAVING:  488640 FREE BYTES. AVERAGE:       50 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,    97000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0          12                  34                  56             ROW SUM IS          102                                         
+0          45                  98                  23             ROW SUM IS          166                                         
+0          55                  88                  99             ROW SUM IS          242                                         
+0          10                   9                  32             ROW SUM IS           51                                         
+1          66                  22                   7             ROW SUM IS           95                                         
+0          98                  76                  54             ROW SUM IS          228                                         
+0       # OF RECORDS:           6                               GRAND TOTAL:          884                                         
+0*** EXECUTION TIME =    0.000 SECS.       116 INSTRUCTIONS EXECUTED -   116000 INSTRUCTIONS/SEC ***                              
+1 ASSIST COMPLETION DUMP                                                                                                          
+0PSW AT ABEND FFC50001 5000005A       COMPLETION CODE   SYSTEM = 0C1 OPERATION                                                    
+0** TRACE OF INSTRUCTIONS JUST BEFORE TERMINATION: PSW BITS SHOWN ARE THOSE BEFORE CORRESPONDING INSTRUCTION DECODED ***          
+0  IM LOCATION    INSTRUCTION :  IM = PSW BITS 32-39(ILC,CC,MASK) BEFORE INSTRUCTION EXECUTED AT PROGRAM LOCATION SHOWN           
+0  20  000036     1A47                                                                                                            
+0  60  000038     1A56                                                                                                            
+0  60  00003A     E020 F131 0085                                                                                                  
+0  E0  000040     E000 F0E1 0050                                                                                                  
+0  D0  000046     47F0 F00A                                                                                                       
+0  90  00000A     4770 F04A                                                                                                       
+0  90  00004A     5240 F071                                                                                                       
+0  90  00004E     5250 F0A9                                                                                                       
+0  90  000052     E020 F05C 0085                                                                                                  
+0  D0  000058     0000            <-- LAST INSTRUCTION DONE - PROBABLE CAUSE OF TERMINATION                                       
+0                                                                                                                                 
+-** TRACE OF LAST 10 BRANCH INSTRUCTIONS EXECUTED: PSW BITS SHOWN ARE THOSE BEFORE CORRESPONDING INSTRUCTION DECODED ***          
+0  IM LOCATION    INSTRUCTION :  IM = PSW BITS 32-39(ILC,CC,MASK) BEFORE INSTRUCTION EXECUTED AT PROGRAM LOCATION SHOWN           
+0  00  000046     47F0 F00A                                                                                                       
+0  80  000046     47F0 F00A                                                                                                       
+0  80  000046     47F0 F00A                                                                                                       
+0  80  000046     47F0 F00A                                                                                                       
+0  80  000046     47F0 F00A                                                                                                       
+0  90  000046     47F0 F00A                                                                                                       
+0  90  00000A     4770 F04A                                                                                                       
+0 REGS 0-7      F4F4F4F4    000000EB    F4F4F4F4    00000036    00000006    00000374    000000E4    00000001                      
+  REGS 8-15     F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    00000210    FFFE7960    00000000                      
+0 FLTR 0-6      F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4                          
+1 USER STORAGE                                                                                                                    
+0                             CORE ADDRESSES SPECIFIED-     000000 TO 000358                                                      
+ 000000   1B441B55 E000F0E1 00504770 F04A1B66    5330F0E1 5230F132 1A635330 10005230   *......0.....0.....0...1.........*         
+ 000020   F1461A63 53301000 5230F15A 1A635260    F17E5870 F0581A47 1A56E020 F1310085   *1.........1.....1...0.......1...*         
+ 000040   E000F0E1 005047F0 F00A5240 F0715250    F0A9E020 F05C0085 00000001 F0404040   *..0....00.. 0...0...0.......0   *         
+ 000060   40404040 7B40D6C6 40D9C5C3 D6D9C4E2    7A404040 40404040 40404040 F6404040   *    . OF RECORDS.           6   *         
+ 000080   40404040 40404040 40404040 40404040    40404040 40404040 40404040 C7D9C1D5   *                            GRAN*         
+ 0000A0   C440E3D6 E3C1D37A 40404040 40404040    4040F8F8 F4404040 40404040 40404040   *D TOTAL.          884           *         
+ 0000C0   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+ 0000E0   40F9F840 40F7F640 40F5F440 40404040    40404040 40404040 40404040 40404040   * 98  76  54                     *         
+ 000100   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+ 000120   40404040 40404040 40F0F0F3 F8F0F0F0    F2F04040 40404040 40404040 F9F84040   *         003800020          98  *         
+ 000140   40404040 40404040 40404040 40404040    F7F64040 40404040 40404040 40404040   *                76              *         
+ 000160   40404040 F5F44040 40404040 40404040    404040D9 D6E640E2 E4D440C9 E2404040   *    54             ROW SUM IS   *         
+ 000180   40404040 404040F2 F2F84040 40404040    40404040 40404040 40404040 40404040   *       228                      *         
+ 0001A0   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+   LINES    0001C0-0001E0    SAME AS ABOVE                                                                                        
+ 000200   40404040 40404040 40404040 4040F5F5    F5F5F5F5 00000000 F5F5F5F5 F5F5F5F5   *              555555....55555555*         
+ 000220   F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5    F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5   *55555555555555555555555555555555*         
+   LINES    000240-000320    SAME AS ABOVE                                                                                        
+0                                                                                                                                 

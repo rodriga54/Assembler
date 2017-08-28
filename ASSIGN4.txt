@@ -1,0 +1,234 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 22.23.40 JOB09066 ---- THURSDAY,  09 JUL 2015 ----
+ 22.23.40 JOB09066  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 22.23.40 JOB09066  ICH70001I KC03F7F  LAST ACCESS AT 22:21:47 ON THURSDAY, JULY 9, 2015
+ 22.23.40 JOB09066  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 22.23.40 JOB09066  -                                         --TIMINGS (MINS.)--            ----PAGING COUNTS---
+ 22.23.40 JOB09066  -JOBNAME  STEPNAME PROCSTEP    RC   EXCP    TCB    SRB  CLOCK   SERV  PG   PAGE   SWAP    VIO SWAPS
+ 22.23.40 JOB09066  -KC03F7FA                      00     52 ******    .00     .0    116   0      0      0      0     0
+ 22.23.40 JOB09066  -KC03F7FA ENDED.  NAME-ABRAHAM RODRIGUEZ    TOTAL TCB CPU TIME=   .00  TOTAL ELAPSED TIME=    .0
+ 22.23.40 JOB09066  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  09 JUL 2015 JOB EXECUTION DATE
+-          129 CARDS READ
+-          234 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           23 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB09066
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00020000
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN    DD *                                                         00050000
+           //*                                                                     00310002
+         6 //FT05F001 DD  *                                                        00320008
+ ICH70001I KC03F7F  LAST ACCESS AT 22:21:47 ON THURSDAY, JULY 9, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF237I JES2 ALLOCATED TO FT05F001
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB09066.D0000103.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB09066.D0000101.?         SYSIN         
+ IEF285I   KC03F7F.KC03F7FA.JOB09066.D0000102.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015190.2223
+ IEF032I STEP/JSTEP01 /STOP  2015190.2223 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11728K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015190.2223
+ IEF033I  JOB/KC03F7FA/STOP  2015190.2223 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00114099         
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *       00115099         
+                                       3 *                                                               *       00115199         
+                                       4 * ASSIGNMENT 4 - LOOPING, XREAD & XPRNT                         *       00115299         
+                                       5 *                                                               *       00116099         
+                                       6 * FUNCTION: THIS PROGRAM READS AN UNKNOWN NUMBER OF EMPLOYEES   *       00117099         
+                                       7 * AND CALCULATES THERE NET PAY. EACH EMPLOYEE HAS A BASE SALARY *       00118099         
+                                       8 * OF $400. THE FINAL OUTPUT IS EACH EMPLOYEES NET PAY.          *       00118199         
+                                       9 *                                                               *       00118399         
+                                      10 * INPUT:THE INPUT LINE CONTIANS 7 RECORDS WITH EMPLOYEE_ID,     *       00119099         
+                                      11 * COMMISION, DEDUCTIONS, AND BONUS.                             *       00119199         
+                                      12 *                                                               *       00119299         
+                                      13 * OUTPUT: PRINTS THE ALL THE INPUT DATA SUMS EACH RECORD. ONCE  *       00119399         
+                                      14 * THE DATA REACHES THE END OF FILE A NEW LINE PRINTS THE TOTAL  *       00119499         
+                                      15 * NETPAY AND A GRAND TOTAL NETPAY FOR ALL EMPLOYEES.            *       00119599         
+                                      16 *                                                               *       00119699         
+                                      17 * REGISTER USAGE:                                               *       00119799         
+                                      18 *               R3 = USED FOR XREAD INPUT DATA                  *       00119899         
+                                      19 *               R4 = USED FOR EACH EMPLOYEES BASE PAY           *       00119999         
+                                      20 *               R5 = USED FOR THE GRAND TOTAL NET SUM           *       00120099         
+                                      21 *               R6 = USED FOR EACH EMPLOYEES NET PAY            *       00120199         
+                                      22 *                                                               *       00120399         
+                                      23 * NOTES:                                                        *       00120999         
+                                      24 *                                                               *       00121099         
+                                      25 *****************************************************************       00121199         
+ 000000                               26 MAIN      CSECT                                                         00130001         
+ 000000                               27           USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099         
+                                      28 *                                                                       00150002         
+ 000000 1B55                          29           SR    5,5                 SET R5 = 0                          00150299         
+                                      30 *         SR    3,3                 SET R3 = 0                          00150399         
+ 000002 E000 F0F3 0050 000F3          31           XREAD BUFFER,80           READ FIRST RECORD                   00151099         
+ 000008 E020 F143 0085 00143          32           XPRNT PRINT1,133          PRINTS COLUMN HEADERS               00151199         
+                                      33 *                                                                       00152002         
+ 00000E 4770 F058            00058    34 LOOP1     BC    B'0111',ENDLOOP1    EOF BRANCH IF YES.                  00160099         
+                                      35 *                                   START OF COLUMN 1                   00170099         
+ 000012 1B66                          36           SR    6,6                 RESETS THE SUM = 0                  00180099         
+                                      37 *                                                                       00190099         
+ 000014 D204 F1CA F0F3 001CA 000F3    38           MVC   OEMPID(5),BUFFER    MOVE ID TO PRINT LINE               00190199         
+                                      39 *                                                                       00190299         
+ 00001A 5840 F068            00068    40           L     4,BASEPAY1          LOADS THE BASEPAY TO R4             00190399         
+                                      41 *         XDECI 3,BUFFER            R3 = HOLDS EVERYONES BASEPAY        00191099         
+ 00001E 5240 F1D0            001D0    42           XDECO 4,OBASEPAY          CONVERTS TO BASE 10                 00192099         
+ 000022 1A64                          43           AR    6,4                 ACCUMULATING SUM                    00192199         
+                                      44 *                                                                       00192299         
+                                      45 *         MVC   OEMPID(5),BUFFER   MOVE ID TO PRINT LINE                00192399         
+                                      46 *                                  START OF COMMISSIONS                 00192499         
+ 000024 5330 F0F8            000F8    47           XDECI 3,BUFFER+5         R3 = HOLDS THE SECOND COLUMN         00193099         
+ 000028 5230 F1DD            001DD    48           XDECO 3,OCOMMIS          CONVERTS TO BASE 10                  00193199         
+ 00002C 1A63                          49           AR    6,3                ACCUMULATING SUM                     00193399         
+                                      50 *                                                                       00193499         
+                                      51 *                             START OF DEDUCTIONS                       00193599         
+ 00002E 5330 1000            00000    52           XDECI 3,0(,1)       R3 = HOLDS THE THIRD COLUMN               00193799         
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000032 5230 F1E9            001E9    53           XDECO 3,ODEDUCT     CONVERTS TO BASE 10                       00193899         
+ 000036 1B63                          54           SR    6,3           SUBTRACT FROM THE SUM                     00194099         
+                                      55 *                                                                       00195023         
+                                      56 *                             START OF BONUS                            00195199         
+ 000038 5330 1000            00000    57           XDECI 3,0(,1)       R3 = HOLDS THE FORTH COLUMN               00195299         
+ 00003C 5230 F1F5            001F5    58           XDECO 3,OBONUS      CONVERTS TO BASE 10                       00195399         
+ 000040 1A63                          59           AR    6,3           ACCUMULATING THE SUM                      00195499         
+                                      60 *                                                                       00195599         
+ 000042 5260 F201            00201    61           XDECO 6,ONETPAY1    SUBTOTAL PER ROW                          00195699         
+                                      62 *                                                                       00196011         
+ 000046 1A56                          63           AR    5,6           ADDS THE GRAND TOTAL                      00214399         
+                                      64 *                                                                       00214499         
+ 000048 E020 F1C9 0085 001C9          65           XPRNT PRINT2,133    PRINTS ROW WITH SUM                       00214599         
+ 00004E E000 F0F3 0050 000F3          66           XREAD BUFFER,80     READS THE NEXT RECORD                     00214699         
+                                      67 *                                                                       00215033         
+ 000054 47F0 F00E            0000E    68           BC    B'1111',LOOP1    BRANCH TO BEGINNING OF LOOP            00220099         
+                                      69 *                                                                       00230399         
+ 000058 5250 F0A5            000A5    70 ENDLOOP1  XDECO 5,ONETPAY2    END OF LOOP1 AND CONVERTS R5 TO BASE 10   00231099         
+                                      71 *                                                                       00240099         
+ 00005C E020 F06C 0085 0006C          72           XPRNT SUMMARY,133   PRINTS THE SUMMARY                        00241099         
+                                      73 *                                                                       00244099         
+                                      74           LTORG                                                         00250003         
+                                      75 *                                                                       00251099         
+ 000068 00000190                      76 BASEPAY1  DC    F'400'        INITIALIZE BASE PAY = 400                 00252099         
+                                      77 *                                                                       00260002         
+ 00006C F0                            78 SUMMARY   DC    C'0'          BUFFER FOR THE RECORD SUMMARY             00261099         
+ 00006D 4040404040404040              79           DC    41C' '                                                  00264099         
+ 000096 E3D6E3C1D340D5C5              80           DC    CL15'TOTAL NET PAY: '                                   00265099         
+ 0000A5                               81 ONETPAY2  DS    CL5           HOLDS THE TOTAL NET PAY                   00266099         
+ 0000AA 4040404040404040              82           DC    73C' '                                                  00266199         
+                                      83 *                                                                       00267099         
+ 0000F3                               84 BUFFER    DS    CL80          BUFFER FOR THE READ RECORD                00270099         
+                                      85 *                                                                       00280002         
+ 000143 F0                            86 PRINT1    DC    C'0'          DOUBLE SPACE CARRIAGE CONTROL             00281099         
+ 000144 C5D4D7D3D6E8C5C5              87           DC    CL12'EMPLOYEE_ID '                                      00281199         
+ 000150 404040                        88           DC    3C' '                                                   00281299         
+ 000153 C2C1E2C540D7C1E8              89           DC    CL12'BASE PAY    '                                      00281399         
+ 00015F C3D6D4D4C9E2E2C9              90           DC    CL12'COMMISSION  '                                      00281499         
+ 00016B C4C5C4E4C3E3C9D6              91           DC    CL12'DEDUCTIONS  '                                      00281599         
+ 000177 C2D6D5E4E2404040              92           DC    CL12'BONUS       '                                      00281699         
+ 000183 D5C5E3D7C1E84040              93           DC    CL12'NETPAY      '                                      00281799         
+ 00018F 4040404040404040              94           DC    58C' '                                                  00281899         
+                                      95 *         DC    8C' '                                                   00281999         
+ 0001C9 F0                            96 PRINT2    DC    C'0'                                                    00282099         
+ 0001CA                               97 OEMPID    DS    CL5           HOLDS DATA FOR EMPLOYEE ID                00282199         
+ 0001CF 40                            98           DC    1C' '                                                   00282299         
+ 0001D0                               99 OBASEPAY  DS    CL3           HOLDS DATA FOR BASE PAY                   00283099         
+ 0001D3 4040404040404040             100           DC    10C' '                                                  00283199         
+ 0001DD                              101 OCOMMIS   DS    CL4           HOLDS DATA FOR COMMISSION                 00284099         
+ 0001E1 4040404040404040             102           DC    8C' '                                                   00284199         
+ 0001E9                              103 ODEDUCT   DS    CL4           HOLDS DATA FOR DEDUCTIONS                 00284299         
+ 0001ED 4040404040404040             104           DC    8C' '                                                   00284399         
+ 0001F5                              105 OBONUS    DS    CL4           HOLDS DATA FOR BONUS                      00284499         
+ 0001F9 4040404040404040             106           DC    8C' '                                                   00284799         
+                                     107 *         DC    61C' '                                                  00284899         
+                                     108 *         DC    8C' '                                                   00284999         
+ 000201                              109 ONETPAY1  DS    CL12          HOLDS DATA FOR NET PAY PER RECORD         00285099         
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 00020D 4040404040404040             110           DC    61C' '                                                  00285199         
+ 00024A 4040404040404040             111           DC    132C' '                                                 00286099         
+                                     112 *                                                                       00287012         
+                                     113           END   MAIN                                                    00290028         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    5584 HIGH:     624 LEAVING:  487360 FREE BYTES. AVERAGE:       54 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,   114000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0EMPLOYEE_ID    BASE PAY    COMMISSION  DEDUCTIONS  BONUS       NETPAY                                                            
+012345          400         2500        1000         500        2400                                                              
+023456          400         1900        1100          10        1210                                                              
+022222          400         1000         400         200        1200                                                              
+065465          400         4200        1500         900        4000                                                              
+044560          400         5000        3000          70        2470                                                              
+099870          400         2200        2100           0         500                                                              
+034966          400         5678           0        2000        8078                                                              
+0                                         TOTAL NET PAY:        19858                                                             
+0*** EXECUTION TIME =    0.000 SECS.       147 INSTRUCTIONS EXECUTED -   147000 INSTRUCTIONS/SEC ***                              
+1 ASSIST COMPLETION DUMP                                                                                                          
+0PSW AT ABEND FFC50001 D0000068       COMPLETION CODE   SYSTEM = 0C1 OPERATION                                                    
+0** TRACE OF INSTRUCTIONS JUST BEFORE TERMINATION: PSW BITS SHOWN ARE THOSE BEFORE CORRESPONDING INSTRUCTION DECODED ***          
+0  IM LOCATION    INSTRUCTION :  IM = PSW BITS 32-39(ILC,CC,MASK) BEFORE INSTRUCTION EXECUTED AT PROGRAM LOCATION SHOWN           
+0  20  000040     1A63                                                                                                            
+0  60  000042     5260 F201                                                                                                       
+0  A0  000046     1A56                                                                                                            
+0  60  000048     E020 F1C9 0085                                                                                                  
+0  E0  00004E     E000 F0F3 0050                                                                                                  
+0  D0  000054     47F0 F00E                                                                                                       
+0  90  00000E     4770 F058                                                                                                       
+0  90  000058     5250 F0A5                                                                                                       
+0  90  00005C     E020 F06C 0085                                                                                                  
+0  D0  000062     F5F5 F5F5 F5F5  <-- LAST INSTRUCTION DONE - PROBABLE CAUSE OF TERMINATION                                       
+0                                                                                                                                 
+-** TRACE OF LAST 10 BRANCH INSTRUCTIONS EXECUTED: PSW BITS SHOWN ARE THOSE BEFORE CORRESPONDING INSTRUCTION DECODED ***          
+0  IM LOCATION    INSTRUCTION :  IM = PSW BITS 32-39(ILC,CC,MASK) BEFORE INSTRUCTION EXECUTED AT PROGRAM LOCATION SHOWN           
+0  00  000054     47F0 F00E                                                                                                       
+0  80  000054     47F0 F00E                                                                                                       
+0  80  000054     47F0 F00E                                                                                                       
+0  80  000054     47F0 F00E                                                                                                       
+0  80  000054     47F0 F00E                                                                                                       
+0  80  000054     47F0 F00E                                                                                                       
+0  90  000054     47F0 F00E                                                                                                       
+0  90  00000E     4770 F058                                                                                                       
+0 REGS 0-7      F4F4F4F4    00000104    F4F4F4F4    000007D0    00000190    00004D92    00001F8E    F4F4F4F4                      
+  REGS 8-15     F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    000002D0    FFFE7960    00000000                      
+0 FLTR 0-6      F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4        F4F4F4F4F4F4F4F4                          
+1 USER STORAGE                                                                                                                    
+0                             CORE ADDRESSES SPECIFIED-     000000 TO 000418                                                      
+ 000000   1B55E000 F0F30050 E020F143 00854770    F0581B66 D204F1CA F0F35840 F0685240   *....03....1.....0...K.1.03. 0.. *         
+ 000020   F1D01A64 5330F0F8 5230F1DD 1A635330    10005230 F1E91B63 53301000 5230F1F5   *1.....08..1.........1Z........15*         
+ 000040   1A635260 F2011A56 E020F1C9 0085E000    F0F30050 47F0F00E 5250F0A5 E020F06C   *....2.....1I....03...00...0...0.*         
+ 000060   0085F5F5 F5F5F5F5 00000190 F0404040    40404040 40404040 40404040 40404040   *..555555....0                   *         
+ 000080   40404040 40404040 40404040 40404040    40404040 4040E3D6 E3C1D340 D5C5E340   *                      TOTAL NET *         
+ 0000A0   D7C1E87A 40404040 40404040 F1F9F8F5    F8404040 40404040 40404040 40404040   *PAY.        19858               *         
+ 0000C0   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+ 0000E0   40404040 40404040 40404040 40404040    404040F3 F4F9F6F6 40F5F6F7 F840F040   *                   34966 5678 0 *         
+ 000100   F2F0F0F0 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *2000                            *         
+ 000120   40404040 40404040 40404040 40404040    40404040 40404040 404040F0 F0F3F8F1   *                           00381*         
+ 000140   F0F9F9F0 C5D4D7D3 D6E8C5C5 6DC9C440    404040C2 C1E2C540 D7C1E840 404040C3   *0990EMPLOYEE.ID    BASE PAY    C*         
+ 000160   D6D4D4C9 E2E2C9D6 D54040C4 C5C4E4C3    E3C9D6D5 E24040C2 D6D5E4E2 40404040   *OMMISSION  DEDUCTIONS  BONUS    *         
+ 000180   404040D5 C5E3D7C1 E8404040 40404040    40404040 40404040 40404040 40404040   *   NETPAY                       *         
+ 0001A0   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+ 0001C0   40404040 40404040 40F0F3F4 F9F6F640    40404040 40404040 40F4F0F0 40404040   *         034966          400    *         
+ 0001E0   40404040 40F5F6F7 F8404040 40404040    40404040 F0404040 40404040 40F2F0F0   *     5678           0        200*         
+ 000200   F0404040 40404040 40F8F0F7 F8404040    40404040 40404040 40404040 40404040   *0        8078                   *         
+ 000220   40404040 40404040 40404040 40404040    40404040 40404040 40404040 40404040   *                                *         
+   LINES    000240-0002A0    SAME AS ABOVE                                                                                        
+ 0002C0   40404040 40404040 40404040 4040F5F5    F5F5F5F5 00000000 F5F5F5F5 F5F5F5F5   *              555555....55555555*         
+ 0002E0   F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5    F5F5F5F5 F5F5F5F5 F5F5F5F5 F5F5F5F5   *55555555555555555555555555555555*         
+   LINES    000300-0003E0    SAME AS ABOVE                                                                                        
+0                                                                                                                                 

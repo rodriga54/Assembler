@@ -1,0 +1,191 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID
+//JSTEP01  EXEC PGM=ASSIST
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+*****************************************************************
+* NAME: ABRAHAM RODRIGUEZ                                       *
+*                                                               *
+* ASSIGNMENT 8 - PACKED BUILD SUBROUTINE                        *
+*                                                               *
+* FUNCTION: THIS PROGRAM READS A UNKNOWN NUMBER OF INTEGERS     *
+* AND BUILDS A TABLE TO STORE THE INTEGERS. THEN USING PACK     *
+* COMMANDS TO PRINT INTEGERS BASED OFF OF A DEFINED NUMBER PER  *
+* PRINT LINE.                                                   *
+*                                                               *
+* INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF 1 INTEGERS *
+* TO BE PROCESSED.                                              *
+*                                                               *
+* OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE NUMBERS PROCESSED   *
+* FROM THE INPUT DATA. SECOND FINDS THE LOWEST, HIGHEST, AND    *
+* AVERAGE NUMBERS.                                              *
+*                                                               *
+* REGISTER USAGE:                                               *
+*               R2 = USED FOR THE PROCESS OF ALL RECORDS        *
+*               R3 = USED FOR THE END OF TABLE                  *
+*               R4 = HOLDS THE NUMBER PER PRINT LINE            *
+*               R5 = USED AS A COUNTER                          *
+*               R6 = PRINT LINE POINTER                         *
+*               R7 = POINTER TO TABLE                           *
+*               R9 = USED AS A POINTER TO #'S PER LINE          *
+*****************************************************************
+ASSIGN8   CSECT
+          USING ASSIGN8,15          ESTABLISH BASE REGISTER 15
+*
+          LA    1,PARMS1            R1 = PARMS1
+          BAL   11,BUILD            BRANCH TO BUILD ROUTINE.
+*
+          LA    9,FOUR              POINTER TO VARIABLE FOUR
+          LA    1,PARMS2            R1 = PARMS2
+          BAL   11,PRINT            BRANCH TO PRINT ROUTINE.
+*
+          LA    9,SIX               POINTER TO VARIABLE SIX
+          LA    1,PARMS3            R1 = PARMS3
+          BAL   11,PRINT            BRANCH TO PRINT ROUTINE.
+*
+          BR    14                  BRANCH TO R4
+********************************************************************
+*               STORAGE FOR THE MAIN DRIVER PROGRAM.
+********************************************************************
+          LTORG
+*
+TABLE     DC    50PL4'0'          TABLE
+EOT       DC    F'0'              HOLDS THE LAST ADDRESS OF ENTRY
+*
+FOUR      DC    PL1'4'            HOLDS NUM OF INTEGERS TO PRINT LINE
+SIX       DC    PL1'6'            HOLDS NUM OF INTEGERS TO PRINT LINE
+*
+PARMS1    DC    A(TABLE,EOT)      PASSING OF PARAMETERS
+PARMS2    DC    A(TABLE,EOT,FOUR) PASSING OF PARAMETERS
+PARMS3    DC    A(TABLE,EOT,SIX)  PASSING OF PARAMETERS
+*
+******************************************************************
+*               THE START OF BUILD SUBROUTINE.
+******************************************************************
+BUILD     STM   0,15,SAVEB           SAVE ALL REGISTERS
+*
+          LM    2,3,0(1)             R2 = TABLE
+*                                    R3 = EOT
+          XREAD CARD,80              READ IN FIRST RECORD
+*
+LOOP1     BNZ   ENDLOOP1             BRANCH IF NOT ZERO
+*
+          PACK  CARD(1),CARD(1)      PACK FIRST NUMBER FROM RECORD
+          LA    7,CARD+1             POINTER TO CARD THAT HOLDS THE REC RDS
+*
+LOOP2     PACK  0(4,2),0(4,7)        PACK FIRST NUMBER TO TABLE
+*
+          LA    2,4(,2)              INCREMENTS TABLE POINTER
+          LA    7,4(,7)              POINTER INCREMENT
+*
+          SP    CARD(1),=PL1'1'      SUBTRACT 1 FROM CARD
+*
+          BZ    ENDLOOP2             IF ZERO BRANCH TO ENDLOOP2
+          B     LOOP2                BRANCH TO LOOP2
+*
+ENDLOOP2  XREAD CARD,80              READ IN THE NEXT RECORD
+*
+          B     LOOP1                BRANCH TO LOOP1
+*
+ENDLOOP1  S     2,=F'4'              STORES 4 IN R2
+*
+          ST    2,0(3)               STORE REGISTER
+          LM    0,15,SAVEB           LOAD SAVED REGISTERS
+          BR    11                   RETURN TO MAIN
+*
+SAVEB     DS    16F                  SAVE BUILD ROUTINE
+*
+CARD      DS    CL80                 CARDS OF RECORDS
+          DC    C'$'
+*
+******************************************************************
+*               THE START OF PRINT SUBROUTINE.
+******************************************************************
+PRINT     STM   0,15,SAVEP            SAVE ALL REGISTERS
+*
+          LM    2,4,0(1)              R2 = TABLE
+*                                     R3 = EOT
+*                                     R4 = NUM1
+*
+          L     3,0(,3)               R3 -> LAST FILLED TABLE ENTRY
+          LA    5,COUNTER             POINTER TO COUNTER
+          ZAP   0(1,5),=PL1'0'        ZERO OUT CONTER
+*
+          LA    6,PLINE              R6 -> PLACE TO STORE NUMBERS
+          L     7,0(,2)              R7 = INTEGER FROM TABLE
+          XPRNT =C' ',1              PRINTS BLANK LINE
+*
+          MVC   COLUMN1(2),=XL2'4020'
+          ED    COLUMN1(2),0(9)      MOVE NUMBER INTO HEADER
+          XPRNT HEADER1,133          PRINT HEADER
+          XPRNT =C' ',1              PRINTS BLANK LINE
+*
+LOOP3     CR    2,3                  COMPARE REGISTERS 2 & 3
+          BH    ENDLOOP3             ENDLOOP3
+*
+          LA    1,9(,6)              INCREMENT PLINE POINTER
+*
+          MVC   0(10,6),=XL10'40206B2020206B202120'
+*
+          EDMK  0(10,6),0(2)         MOVE NUMBERS TO PRINT LINE
+          LA    6,10(,6)             INCREMENT PLINE POINTER
+*
+          BCTR  1,0                  DECREMENTS BY 1
+          MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS
+*
+          CP    0(4,2),=PL6'0'       COMPARE AMT TO 0
+*
+          BNL   POSITIVE             BRANCH TO POSITIVE
+          BCTR  1,0                  DECREMENT R1 BY 1
+          MVI   0(1),C'-'            MOVE A "-" IF NUMBER IS NEGATIVE
+*
+POSITIVE  DS    0H
+*
+          AP    0(1,5),=PL1'1'       INCREMENT COUNTER
+*
+          CP    0(1,5),0(1,9)        COMPARE PACK VALUES IN 5 & 9
+*
+          BL    NOPRINT              BRANCH TO NOPRINT LABEL
+*
+          XPRNT PLINE,133            PRINT LINE
+*
+          MVI   PLINE+1,C' '         MOVE SPACE TO PLINE + 1
+          MVC   PLINE+2(131),PLINE+1   CLEAR OUT LINE
+*
+          ZAP   0(1,5),=PL1'0'       ZERO OUT CONTER
+*
+          LA    6,PLINE              NEW PRINT LINE
+*
+NOPRINT   LA    2,4(,2)              INCREMENT POINTER TO NEXT ENTRY
+          LA    7,0(,2)              R7 = NEXT INTEGER IN TABLE
+*
+          B     LOOP3                BRANCH TO TOP OF LOOOP3
+*
+ENDLOOP3  XPRNT PLINE,133            PRINTS THE REMAINING #'S
+*
+          STM   0,15,SAVEP           SAVE ALL REGISTERS
+          LM    0,15,SAVEP           LOAD REGISTERS
+          XPRNT =C' ',1              BLANK LINE
+*
+          BR    11                   BRANCH TO REGISTER 11
+*
+SAVEP     DS    16F                  SAVE PRINT
+*
+COUNTER   DC    PL1'0'               USED FOR AS A COUNTER
+*
+HEADER1   DC    C'1'                 HEADER WITH CC ON TOP OF PAGE
+          DC    CL19'THE NUMBERS PRINTED'
+COLUMN1   DC    CL2' '               VALUE PER PRINT LINE
+          DC    CL10' PER LINE.'
+          DC    100C' '
+*
+PLINE     DC    C'0'                 HOLDS THE VALUES TO BE PRINTED
+          DC    132C' '
+*
+******************************************************************
+          END   ASSIGN8
+/*
+//*
+//FT05F001  DD DSN=KC02322.CSCI360.DATASU15(DATA8),DISP=SHR
+//FT06F001  DD SYSOUT=*
+/*

@@ -1,0 +1,400 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID
+//JSTEP01  EXEC PGM=ASSIST
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+*****************************************************************
+* NAME: ABRAHAM RODRIGUEZ                                       *
+*                                                               *
+* ASSIGNMENT 9 - EXTERNAL SUBROUTINE                            *
+*                                                               *
+* FUNCTION: THIS PROGRAM READS A UNKNOWN NUMBER OF RECORDS AND  *
+* PACKS / MOVES THEM INTO A TABLE. DSECT'S WILL BE USED TO      *
+* PROCESS THE RECORDS AND ANOTHER FOR THE TABLE. 4 EXTERNAL     *
+* SUBROUTINES WILL BE CALLED FIRST BUILD TO BUILD TABLE, PRINT, *
+* TO PRINT TABLE CURRENTLY STORED IN TABLE, SORT, TO THE TABLE  *
+* ASCENDING ORDER, AND FINALLY CALL PRINT, TO PRINT NAMES IN    *
+* ALPHABETICAL ORDER.                                           *
+*                                                               *
+* INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF RECOARDS   *
+* TO BE PROCESSED.                                              *
+*                                                               *
+* OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE RECORDS PROCESSED   *
+* FROM THE INPUT DATA AND CALULATES THE PERCENTAGE FEE BASED ON *
+* TRANSACTION AMOUNT. SECOND PRINTS THE SAME INFORAMTION AS     *
+* THE FIRST PRINT EXCEPT IT'S SORTED IN ASCENDING ORDER.        *
+*                                                               *
+* REGISTER USAGE:                                               *
+*               R1 = PARAMTER LIST                              *
+*               R2 = USED FOR THE PROCESS OF ALL RECORDS        *
+*               R3 = USED FOR THE END OF TABLE                  *
+*               R4 = HOLDS LABEL FOR PRINT LINE                 *
+*                                                               *
+*****************************************************************
+*     TABLE ENTRY AN AREA IN STORAGE                            *
+*****************************************************************
+$TENTRY   DSECT
+$TNUM     DS    PL1
+$TNAME    DS    CL20
+$TAMT     DS    PL5
+*TFILL1   DS    PL1
+$TPCT1    DS    PL3
+*TFILL2   DS    PL1
+$TPCT2    DS    PL3
+*****************************************************************
+*     RECORD AN AREA IN STORAGE                                 *
+*****************************************************************
+$RECORD   DSECT
+$RNUM     DS    CL1
+$RNAME    DS    CL20
+$RAMT     DS    CL9
+$RFILL1   DS    CL1
+$RPCT1    DS    CL5
+$RFILL2   DS    CL1
+$RPCT2    DS    CL5
+*****************************************************************
+ASSIGN9   CSECT
+          STM   14,12,12(13)        SAVES ALL CALLING ROUTINES R
+          LR    12,15               SETUP BASE REGISTER
+*
+          USING ASSIGN9,12          ESTABLISH BASE REGISTER 12
+*
+          LA    14,MAINSAVE         ADDRESS TO ROUTINE'S SAVE AREA
+          ST    13,4(,14)           SAVE BACKWARD POINTER
+          ST    14,8(,13)           SAVE FORWARD POINTER
+          LR    13,14               LOAD R14 TO R13
+*
+********************************************************************
+*
+          LA    1,PARMS1            R1 = PARMS1
+          L     15,=V(BUILD)        BRANCH TO BUILD ROUTINE.
+          BALR  14,15               ADDRESS OF ROUTINE BEING CALLED
+*
+********************************************************************
+*
+          LA    1,PARMS2            R1 = PARMS2
+          L     15,=V(PRINT)        BRANCH TO PRINT ROUTINE.
+          BALR  14,15               ADDRESS OF ROUTINE BEING CALLED
+*
+********************************************************************
+*
+          LA    1,PARMS1            R1 = PARMS1
+          L     15,=V(SORT)         BRANCH TO SORT ROUTINE.
+          BALR  14,15               ADDRESS OF ROUTINE BEING CALLED
+*
+********************************************************************
+*
+          LA    1,PARMS3            R1 = PARMS3
+          L     15,=V(PRINT)        BRANCH TO PRINT ROUTINE.
+          BALR  14,15               ADDRESS OF ROUTINE BEING CALLED
+*
+********************************************************************
+*         STANDARD EXIT LINKAGE
+********************************************************************
+          L     13,4(,13)           LOADS THE ADDRESS OF SAVE AREA
+          LM    14,12,12(13)        RELOAD REGISTERS EXCEPT R13
+          BR    14                  BRANCH TO R4
+********************************************************************
+*               STORAGE FOR THE MAIN DRIVER PROGRAM.
+********************************************************************
+          LTORG
+*
+MAINSAVE  DS    18F                 SAVE MAIN AREA
+*
+          ORG   ASSIGN9+((*-ASSIGN9+31)/32*32)
+          DC    CL32'****** THE TABLE FOLLOWS *******'
+*
+TABLE     DS    25CL32              TABLE SIZE
+EOT       DC    F'0'                HOLDS THE LAST ADDRESS OF ENTRY
+*
+UNSORT    DC    CL8'UNSORTED'       HOLDS UNSORTED LABEL
+PSORT     DC    CL8' SORTED '       HOLDS SORTED LABEL
+*
+PARMS1    DC    A(TABLE,EOT)        PASSING OF PARAMETERS
+PARMS2    DC    A(TABLE,EOT,UNSORT) PASSING OF PARAMETERS
+PARMS3    DC    A(TABLE,EOT,PSORT)  PASSING OF PARAMETERS
+*
+******************************************************************
+* NAME: BUILD EXTERNAL SUBROUTINE.                               *
+*                                                                *
+* FUNCTION: BUILDS A TABLE FROM INPUT RECORDS                    *
+*                                                                *
+* INPUT: PARAMETERS PASSED IN ARE THE TABLE AND EOT.             *
+*                                                                *
+* OUTPUT: STORES RECORDS FROM INTO TO A TABLE.                   *
+*                                                                *
+* REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *
+*             2 ADDRESS OF TABLE                                 *
+*             3 ADDRESS OF ENDOF TABLE                           *
+*             4 HOLDS MY XREAD CARD                              *
+*                                                                *
+******************************************************************
+BUILD     CSECT
+*
+          STM   14,12,12(13)         SAVE ALL REGISTERS
+          LR    12,15                SETUP BASE REGISTER
+          USING BUILD,12             ESTABLISH BASE REGISTER
+          LA    14,SAVEB             ADDRESS TO ROUTINE'S SAVE AREA
+          ST    13,4(,14)            SAVE BACKWARD POINTER
+          ST    14,8(,13)            SAVE FORWARD POINTER
+          LR    13,14                LOAD R14 TO R13
+*
+          USING $TENTRY,2            TABLE ENTRY
+          LM    2,3,0(1)             R2 = TABLE
+*                                    R3 = EOT
+*
+          LA    4,CARD               R4 -> CARD
+          USING $RECORD,4            ADDRESSABILITY FOR $RECORD DSECT
+*
+          XREAD CARD,80              READS IN FIRST RECORD
+*
+LOOP1     BNZ   ENDLOOP1             BRANCH IF NOT ZERO
+*
+          PACK  $TNUM(1),$RNUM(1)
+          MVC   $TNAME(20),$RNAME     MOVING NAME TO TABLE
+          PACK  $TAMT(5),$RAMT(9)     PACK THE AMOUNT
+          PACK  $TPCT1(3),$RPCT1(5)   PACK THE 1ST PERCENTAGE
+          PACK  $TPCT2(3),$RPCT2(5)   PACK THE 2ND PERCENTAGE
+*
+          LA    2,32(,2)             INCREMENT TO NEXT TABLE RECORD
+          XREAD CARD,80              READ IN NEXT RECORD
+*
+          B     LOOP1                BRANCH TO LOOP1
+*
+          DROP  2,4                  DROP BOTH $TENTRY & $RECORD
+*
+ENDLOOP1  S     2,=F'32'
+          ST    2,0(3)               STORE REGISTER
+          L     13,4(,13)            ADDRESS OF SAVE BUILD
+          LM    14,12,12(13)         RESTORE ROUTINES REGISTERS
+          BR    14                   BRANCH TO REGISTER 14
+*
+*********************    BUILD STORAGE   *************************
+*
+          LTORG
+*
+SAVEB     DS    18F                  SAVE BUILD ROUTINE
+CARD      DS    CL80                 CARDS OF RECORDS
+          DC    C'$'
+*
+******************************************************************
+* NAME: PRINT EXTERNAL SUBROUTINE.                               *
+*                                                                *
+* FUNCTION: PRINTS WHAT IS STORED IN THE TABLE                   *
+*                                                                *
+* INPUT: PARAMETERS PASSED IN ARE THE TABLE, EOT, AND LABEL      *
+*                                                                *
+* OUTPUT: PRINTS TABLE UNKNOWN NUMBER OF ENTRIES. DETERMINES IF  *
+* PERSON IS LONG OR SHORT TERM BASED OFF OF FIRST PACKED ENTRY.  *
+* ALSO DETERMINES WHICH FEE PERCENTAGE BASED ON THE TRANSACTION  *
+* AMOUNT TO BE CALCULATED. THEN PRINTS ALL INFO ON PRINT LINE.   *
+*                                                                *
+* REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *
+*             2 ADDRESS OF TABLE                                 *
+*             3 ADDRESS OF ENDOF TABLE                           *
+*             4 HOLDS LABEL FOR PRINT LINE                       *
+*                                                                *
+******************************************************************
+PRINT     CSECT
+*
+          STM   14,12,12(13)         SAVE ALL REGISTERS
+          LR    12,15                SETUP BASE REGISTER
+          USING PRINT,12             ESTABLIISH BASE REGISTER
+          LA    14,SAVEP             ADDRESS TO ROUTINE'S SAVE AREA
+          ST    13,4(,14)            SAVE BACKWARD POINTER
+          ST    14,8(,13)            SAVE FORWARD POINTER
+          LR    13,14                LOAD R14 TO R13
+*
+          LM    2,4,0(1)             R2 = TABLE
+*                                    R3 = EOT
+*                                    R4 = SORTED OR UNSORTED
+          L     3,0(,3)              R3 -> LAST TABLE ENTRY
+*
+          USING $TENTRY,2            DEFINE USE OF TABLE EN
+          MVC   PTYPE(8),0(4)        MOVES TYPE TO PRINTLINE
+          XPRNT =C' ',1              ADDS BLANK LINE
+          XPRNT HEADER1,133          PRINTS HEADER TYPE
+          XPRNT =C' ',1              ADDS BLANK LINE
+          XPRNT HEADER2,133          PRINT COLUMN HEADERS
+          XPRNT HEADER3,133          PRINTS A '-' LINE
+*
+LOOP3     CR    2,3                  COMPARE REGISTERS 2 & 3
+          BH    ENDLOOP3             ENDLOOP3
+*
+LOOP4     CP    $TNUM,=PL1'2'        COMPARES TYPE WITH # 2
+          BE    SHORTTPE             BRANCH TO SHORT-TERM
+          MVC   PNTTYPE(10),LONG     MOVE LONG-TERM TO PRINTLINE
+          B     ENDLOOP4             BRANCH TO ENDLOOP4
+SHORTTPE  MVC   PNTTYPE(10),SHORT    MOVE SHORT-TERM TO PRINTLINE
+ENDLOOP4  MVC   PNTNAME(20),$TNAME   MOVE NAME TO PRINTLINE
+*
+          LA    1,PNTAMT+9           IF ZERO THEN PRINT A ZERO
+          MVC   PNTAMT(13),=XL13'40206B2020206B2021204B2020'
+          EDMK  PNTAMT(13),$TAMT     MOVE NUMBERS TO PRINT LINE
+          BCTR  1,0                  DECREMENTS BY 1
+          MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS
+          DS    0H
+*
+*******     CALCULATION OF LOW % FEE   ***************
+*
+          ZAP   FEE(8),$TAMT         ZAP TANSACTION TO FEE
+LOOP2     CP    $TAMT,FEECALC        COMPARE TO LARGEST NUMBER POSSIBLE
+          BH    HIGHFEE              BRANCH HIGH
+          MP    FEE(8),$TPCT1        MULTIPLY PRCT AND AMOUNT
+NEXT      SRP   FEE(8),4,0           SHIFT & ROUND DECIMAL
+*
+          LA    1,PNTFEE+6           IF ZERO THEN PRINT A ZERO
+          MVC   PNTFEE(10),=XL10'4020206B2021204B2020'
+          EDMK  PNTFEE(10),FEE       EDIT MARK FEE
+          BCTR  1,0                  DECREMENTS BY 1
+          MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS
+          DS    0H
+*
+          LA    1,PNTPCT+8           IF ZERO THEN PRINT A ZERO
+          MVC   PNTPCT(7),=XL7'402021204B2020'
+          EDMK  PNTPCT(7),$TPCT1     EDIT MARK PERCENT
+          BCTR  1,0                  DECREMENTS BY 1
+          MVI   0(1),C'%'            MOVE $ TO ALL NUMBERS
+*
+          B     ENDLOOP2             BRANCH TO ENDLOOP2
+*
+*******    CALCULATION OF HIGH % FEE     ***********
+*
+HIGHFEE   MP    FEE(8),$TPCT2        MULTIPLY PRCT AND AMOUNT
+          B     NEXT
+*
+ENDLOOP2  XPRNT PLINE,133            PRINT LINE POINTER TO NEXT ENTRY
+*
+          LA    2,32(,2)             INCREMENT POINTER TO NEXT ENTRY
+          B     LOOP3                BRANCH TO TOP OF LOOOP3
+*
+          DROP  2                    DROP $TENTRY
+*
+ENDLOOP3  L     13,4(,13)            ADDRESS OF SAVE AREA
+          LM    14,12,12(13)         RESTORE REGISTERS
+*
+          BR    14                   BRANCH TO REGISTER 14
+*
+*********************  PRINT STORAGE   **************************
+*
+          LTORG
+*
+SAVEP     DS    18F                  SAVE PRINT
+*
+SHORT     DC    CL10'SHORT-TYPE'     DECLARE SHORT-TYPE
+LONG      DC    CL10'LONG-TYPE '     DECLARE LONG-TYPE
+*
+FEECALC   DC    PL6'999999'          SETS THE FUND FEE CALCULATION
+FEE       DC    PL8'0'
+*
+HEADER1   DC    C'1'                 HEADER WITH CC ON TOP OF PAGE
+          DC    CL49' '
+          DC    C'THE '
+PTYPE     DC    CL8' '
+          DC    C' CUSTOMER FUND FEE DATA'
+          DC    49C' '
+*
+HEADER2   DC    C'1'                 PRINS COLUMN NAMES
+          DC    CL4'TYPE'
+          DC    CL27' '
+          DC    CL4'NAME'
+          DC    CL31' '
+          DC    CL18'TRANSACTION AMOUNT'
+          DC    CL12' '
+          DC    CL11'PERCENT FEE'
+          DC    CL12' '
+          DC    CL10'FEE AMOUNT'
+*
+HEADER3   DC    C'0'                 PRINTS HEADER3
+          DC    CL48'------------------------------------------------'
+          DC    CL48'------------------------------------------------'
+          DC    CL37'-------------------------------------'
+*
+PLINE     DC    C'0'                 HOLDS THE VALUES TO BE PRINTED
+PNTTYPE   DC    CL10' '              HOLD THE TYPE
+          DC    CL21' '
+PNTNAME   DC    CL13' '              HOLDS THE NAME
+          DC    CL22' '
+PNTAMT    DC    CL9' '               HOLDS THE AMOUNT
+          DC    CL21' '
+PNTPCT    DC    CL5' '               HOLDS THE PERCENT
+          DC    CL18' '
+PNTFEE    DC    CL10' '              HOLDS THE FEE
+*
+******************************************************************
+* NAME: SORT EXTERNAL SUBROUTINE.                                *
+*                                                                *
+* FUNCTION: SORTS A TABLE IN ASCENDING ORDER USING THE SELECTION *
+*           SORT.                                                *
+*                                                                *
+* INPUT: PARAMETERS PASSED IN ARE THE TABLE AND EOT              *
+*                                                                *
+* OUTPUT: TABLE SORTED ASCENDING ORDER.                          *
+*                                                                *
+* REGISTERS:  1 ADDRESS OF THE PARAMETER LIST                    *
+*             2 ADDRESS OF TABLE                                 *
+*             3 ADDRESS OF ENDOF TABLE                           *
+*             4 HOLDS ADDRESS OF LOWEST TABLE ELEMENT            *
+*             5 ADDRESS TABLE COUNTER                            *
+*                                                                *
+******************************************************************
+*
+SORT      CSECT
+*
+          STM   14,12,12(13)         SAVE ALL REGISTERS
+          LR    12,15                SETUP BASE REGISTER
+          USING SORT,12              ESTABLIISH BASE REGISTER
+          LA    14,SORTSAVE          ADDRESS TO ROUTINE'S SAVE AREA
+          ST    13,4(,14)            SAVE BACKWARD POINTER
+          ST    14,8(,13)            SAVE FORWARD POINTER
+          LR    13,14                LOAD R14 TO R13
+*
+          LM    2,3,0(1)             LOAD PARAMETER LIST
+*
+          L     3,0(,3)              R3 -> LAST TABLE ENTRY
+***********************  SELECTION SORT  ************************
+*
+DO1       CR    2,3
+          BNL   ENDDO1               BRANCH TO ENDDO1
+*
+          LR    4,2                  LOAD R2 TO R4
+          LA    5,32(,4)             LOADING NEXT LINE IN R5
+*
+DO2       CR    5,3                  COMPARE R5 TO R3
+          BH    ENDDO2               BRANCH HIGH ENDDO2
+*
+IF1       CLC   1(20,5),1(4)         COMPARE LOGIC IF SMALLER
+          BNL   ENDIF1               BRANCH TO ENDIF1
+          LR    4,5                  LOAD R4 TO R5
+ENDIF1    DS    0H                   ENDIF1
+          LA    5,32(,5)             NEXT LINE
+          B     DO2                  BRANCH TO DO2
+*
+ENDDO2    DS    0H                   ENDDO2
+*
+          MVC   SWAP(32),0(2)        MOVE TO TEMP SWAP AREA
+          MVC   0(32,2),0(4)         MOVE NEW LOW TO TABLE
+          MVC   0(32,4),SWAP         MOVE CONTENT FROM STORAGE TO R4
+          LA    2,32(,2)             NEXT TABLE ENTRY
+*
+          B     DO1                  INCREMENT TOP BY 1
+ENDDO1    DS    0H                   END DO1
+          L     13,4(,13)            ADDRESS OF SAVE AREA
+          LM    14,12,12(13)         RESTORE REGISTERS
+*
+          BR    14                   BRANCH TO REGISTER 14
+*
+*********************   SORT STORAGE   **************************
+*
+          LTORG
+*
+SORTSAVE  DS    18F                  SORT SAVE AREA
+SWAP      DS    CL32                 STORAGE TO SWAP LINES
+*
+******************************************************************
+          END   ASSIGN9
+/*
+//*
+//FT05F001  DD DSN=KC02322.CSCI360.DATASU15(DATA9),DISP=SHR
+//FT06F001  DD SYSOUT=*
+/*

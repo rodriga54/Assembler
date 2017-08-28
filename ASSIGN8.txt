@@ -1,0 +1,273 @@
+2
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 21.22.01 JOB08988 ---- WEDNESDAY, 29 JUL 2015 ----
+ 21.22.01 JOB08988  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 21.22.02 JOB08988  ICH70001I KC03F7F  LAST ACCESS AT 21:13:26 ON WEDNESDAY, JULY 29, 2015
+ 21.22.02 JOB08988  $HASP373 KC03F7FA STARTED - INIT 3    - CLASS A        - SYS S0W1
+ 21.22.02 JOB08988  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  29 JUL 2015 JOB EXECUTION DATE
+-          191 CARDS READ
+-          272 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-           20 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB08988
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                                      
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                               
+         4 //SYSPRINT DD SYSOUT=*                                                          
+         5 //SYSIN    DD *                                                                 
+           //*                                                                             
+         6 //FT05F001  DD DSN=KC02322.CSCI360.DATASU15(DATA8),DISP=SHR                     
+         7 //FT06F001  DD SYSOUT=*                                                         
+           /*                                                                              
+ ICH70001I KC03F7F  LAST ACCESS AT 21:13:26 ON WEDNESDAY, JULY 29, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IGD103I SMS ALLOCATED TO DDNAME FT05F001
+ IEF237I JES2 ALLOCATED TO FT06F001
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB08988.D0000102.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB08988.D0000101.?         SYSIN         
+ IGD104I KC02322.CSCI360.DATASU15                     RETAINED,  DDNAME=FT05F001
+ IEF285I   KC03F7F.KC03F7FA.JOB08988.D0000103.?         SYSOUT        
+ IEF373I STEP/JSTEP01 /START 2015210.2122
+ IEF032I STEP/JSTEP01 /STOP  2015210.2122 
+         CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11440K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015210.2122
+ IEF033I  JOB/KC03F7FA/STOP  2015210.2122 
+         CPU:     0 HR  00 MIN  00.01 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************                        
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *                        
+                                       3 *                                                               *                        
+                                       4 * ASSIGNMENT 8 - PACKED BUILD SUBROUTINE                        *                        
+                                       5 *                                                               *                        
+                                       6 * FUNCTION: THIS PROGRAM READS A UNKNOWN NUMBER OF INTEGERS     *                        
+                                       7 * AND BUILDS A TABLE TO STORE THE INTEGERS. THEN USING PACK     *                        
+                                       8 * COMMANDS TO PRINT INTEGERS BASED OFF OF A DEFINED NUMBER PER  *                        
+                                       9 * PRINT LINE.                                                   *                        
+                                      10 *                                                               *                        
+                                      11 * INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF 1 INTEGERS *                        
+                                      12 * TO BE PROCESSED.                                              *                        
+                                      13 *                                                               *                        
+                                      14 * OUTPUT: PRINTS TWO REPORTS, FIRST ALL THE NUMBERS PROCESSED   *                        
+                                      15 * FROM THE INPUT DATA. SECOND FINDS THE LOWEST, HIGHEST, AND    *                        
+                                      16 * AVERAGE NUMBERS.                                              *                        
+                                      17 *                                                               *                        
+                                      18 * REGISTER USAGE:                                               *                        
+                                      19 *               R2 = USED FOR THE PROCESS OF ALL RECORDS        *                        
+                                      20 *               R3 = USED FOR THE END OF TABLE                  *                        
+                                      21 *               R4 = HOLDS THE NUMBER PER PRINT LINE            *                        
+                                      22 *               R5 = USED AS A COUNTER                          *                        
+                                      23 *               R6 = PRINT LINE POINTER                         *                        
+                                      24 *               R7 = POINTER TO TABLE                           *                        
+                                      25 *               R9 = USED AS A POINTER TO #'S PER LINE          *                        
+                                      26 *****************************************************************                        
+ 000000                               27 ASSIGN8   CSECT                                                                          
+ 000000                               28           USING ASSIGN8,15          ESTABLISH BASE REGISTER 15                           
+                                      29 *                                                                                        
+ 000000 4110 F0F8            000F8    30           LA    1,PARMS1            R1 = PARMS1                                          
+ 000004 45B0 F118            00118    31           BAL   11,BUILD            BRANCH TO BUILD ROUTINE.                             
+                                      32 *                                                                                        
+ 000008 4190 F0F4            000F4    33           LA    9,FOUR              POINTER TO VARIABLE FOUR                             
+ 00000C 4110 F100            00100    34           LA    1,PARMS2            R1 = PARMS2                                          
+ 000010 45B0 F1FA            001FA    35           BAL   11,PRINT            BRANCH TO PRINT ROUTINE.                             
+                                      36 *                                                                                        
+ 000014 4190 F0F5            000F5    37           LA    9,SIX               POINTER TO VARIABLE SIX                              
+ 000018 4110 F10C            0010C    38           LA    1,PARMS3            R1 = PARMS3                                          
+ 00001C 45B0 F1FA            001FA    39           BAL   11,PRINT            BRANCH TO PRINT ROUTINE.                             
+                                      40 *                                                                                        
+ 000020 07FE                          41           BR    14                  BRANCH TO R4                                         
+                                      42 ********************************************************************                     
+                                      43 *               STORAGE FOR THE MAIN DRIVER PROGRAM.                                     
+                                      44 ********************************************************************                     
+                                      45           LTORG                                                                          
+                                      46 *                                                                                        
+ 000028 0000000C0000000C              47 TABLE     DC    50PL4'0'          TABLE                                                  
+ 0000F0 00000000                      48 EOT       DC    F'0'              HOLDS THE LAST ADDRESS OF ENTRY                        
+                                      49 *                                                                                        
+ 0000F4 4C                            50 FOUR      DC    PL1'4'            HOLDS NUM OF INTEGERS TO PRINT LINE                    
+ 0000F5 6C                            51 SIX       DC    PL1'6'            HOLDS NUM OF INTEGERS TO PRINT LINE                    
+                                      52 *                                                                                        
+1                                                                                                               PAGE    2         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0000F8 00000028000000F0              53 PARMS1    DC    A(TABLE,EOT)      PASSING OF PARAMETERS                                  
+ 000100 00000028000000F0              54 PARMS2    DC    A(TABLE,EOT,FOUR) PASSING OF PARAMETERS                                  
+ 00010C 00000028000000F0              55 PARMS3    DC    A(TABLE,EOT,SIX)  PASSING OF PARAMETERS                                  
+                                      56 *                                                                                        
+                                      57 ******************************************************************                       
+                                      58 *               THE START OF BUILD SUBROUTINE.                                           
+                                      59 ******************************************************************                       
+ 000118 900F F168            00168    60 BUILD     STM   0,15,SAVEB           SAVE ALL REGISTERS                                  
+                                      61 *                                                                                        
+ 00011C 9823 1000            00000    62           LM    2,3,0(1)             R2 = TABLE                                          
+                                      63 *                                    R3 = EOT                                            
+ 000120 E000 F1A8 0050 001A8          64           XREAD CARD,80              READ IN FIRST RECORD                                
+                                      65 *                                                                                        
+ 000126 4770 F15A            0015A    66 LOOP1     BNZ   ENDLOOP1             BRANCH IF NOT ZERO                                  
+                                      67 *                                                                                        
+ 00012A F200 F1A8 F1A8 001A8 001A8    68           PACK  CARD(1),CARD(1)      PACK FIRST NUMBER FROM RECORD                       
+ 000130 4170 F1A9            001A9    69           LA    7,CARD+1             POINTER TO CARD THAT HOLDS THE REC RDS              
+                                      70 *                                                                                        
+ 000134 F233 2000 7000 00000 00000    71 LOOP2     PACK  0(4,2),0(4,7)        PACK FIRST NUMBER TO TABLE                          
+                                      72 *                                                                                        
+ 00013A 4120 2004            00004    73           LA    2,4(,2)              INCREMENTS TABLE POINTER                            
+ 00013E 4170 7004            00004    74           LA    7,4(,7)              POINTER INCREMENT                                   
+                                      75 *                                                                                        
+ 000142 FB00 F1A8 F416 001A8 00416    76           SP    CARD(1),=PL1'1'      SUBTRACT 1 FROM CARD                                
+                                      77 *                                                                                        
+ 000148 4780 F150            00150    78           BZ    ENDLOOP2             IF ZERO BRANCH TO ENDLOOP2                          
+ 00014C 47F0 F134            00134    79           B     LOOP2                BRANCH TO LOOP2                                     
+                                      80 *                                                                                        
+ 000150 E000 F1A8 0050 001A8          81 ENDLOOP2  XREAD CARD,80              READ IN THE NEXT RECORD                             
+                                      82 *                                                                                        
+ 000156 47F0 F126            00126    83           B     LOOP1                BRANCH TO LOOP1                                     
+                                      84 *                                                                                        
+ 00015A 5B20 F400            00400    85 ENDLOOP1  S     2,=F'4'              STORES 4 IN R2                                      
+                                      86 *                                                                                        
+ 00015E 5023 0000            00000    87           ST    2,0(3)               STORE REGISTER                                      
+ 000162 980F F168            00168    88           LM    0,15,SAVEB           LOAD SAVED REGISTERS                                
+ 000166 07FB                          89           BR    11                   RETURN TO MAIN                                      
+                                      90 *                                                                                        
+ 000168                               91 SAVEB     DS    16F                  SAVE BUILD ROUTINE                                  
+                                      92 *                                                                                        
+ 0001A8                               93 CARD      DS    CL80                 CARDS OF RECORDS                                    
+ 0001F8 5B                            94           DC    C'$'                                                                     
+                                      95 *                                                                                        
+                                      96 ******************************************************************                       
+                                      97 *               THE START OF PRINT SUBROUTINE.                                           
+                                      98 ******************************************************************                       
+ 0001FA 900F F2B4            002B4    99 PRINT     STM   0,15,SAVEP            SAVE ALL REGISTERS                                 
+                                     100 *                                                                                        
+ 0001FE 9824 1000            00000   101           LM    2,4,0(1)              R2 = TABLE                                         
+                                     102 *                                     R3 = EOT                                           
+                                     103 *                                     R4 = NUM1                                          
+                                     104 *                                                                                        
+ 000202 5830 3000            00000   105           L     3,0(,3)               R3 -> LAST FILLED TABLE ENTRY                      
+ 000206 4150 F2F4            002F4   106           LA    5,COUNTER             POINTER TO COUNTER                                 
+ 00020A F800 5000 F417 00000 00417   107           ZAP   0(1,5),=PL1'0'        ZERO OUT CONTER                                    
+                                     108 *                                                                                        
+ 000210 4160 F379            00379   109           LA    6,PLINE              R6 -> PLACE TO STORE NUMBERS                        
+1                                                                                                               PAGE    3         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 000214 5870 2000            00000   110           L     7,0(,2)              R7 = INTEGER FROM TABLE                             
+ 000218 E020 F418 0001 00418         111           XPRNT =C' ',1              PRINTS BLANK LINE                                   
+                                     112 *                                                                                        
+ 00021E D201 F309 F404 00309 00404   113           MVC   COLUMN1(2),=XL2'4020'                                                    
+ 000224 DE01 F309 9000 00309 00000   114           ED    COLUMN1(2),0(9)      MOVE NUMBER INTO HEADER                             
+ 00022A E020 F2F5 0085 002F5         115           XPRNT HEADER1,133          PRINT HEADER                                        
+ 000230 E020 F418 0001 00418         116           XPRNT =C' ',1              PRINTS BLANK LINE                                   
+                                     117 *                                                                                        
+ 000236 1923                         118 LOOP3     CR    2,3                  COMPARE REGISTERS 2 & 3                             
+ 000238 4720 F29C            0029C   119           BH    ENDLOOP3             ENDLOOP3                                            
+                                     120 *                                                                                        
+ 00023C 4110 6009            00009   121           LA    1,9(,6)              INCREMENT PLINE POINTER                             
+                                     122 *                                                                                        
+ 000240 D209 6000 F406 00000 00406   123           MVC   0(10,6),=XL10'40206B2020206B202120'                                      
+                                     124 *                                                                                        
+ 000246 DF09 6000 2000 00000 00000   125           EDMK  0(10,6),0(2)         MOVE NUMBERS TO PRINT LINE                          
+ 00024C 4160 600A            0000A   126           LA    6,10(,6)             INCREMENT PLINE POINTER                             
+                                     127 *                                                                                        
+ 000250 0610                         128           BCTR  1,0                  DECREMENTS BY 1                                     
+ 000252 925B 1000      00000         129           MVI   0(1),C'$'            MOVE $ TO ALL NUMBERS                               
+                                     130 *                                                                                        
+ 000256 F935 2000 F410 00000 00410   131           CP    0(4,2),=PL6'0'       COMPARE AMT TO 0                                    
+                                     132 *                                                                                        
+ 00025C 47B0 F266            00266   133           BNL   POSITIVE             BRANCH TO POSITIVE                                  
+ 000260 0610                         134           BCTR  1,0                  DECREMENT R1 BY 1                                   
+ 000262 9260 1000      00000         135           MVI   0(1),C'-'            MOVE A "-" IF NUMBER IS NEGATIVE                    
+                                     136 *                                                                                        
+ 000266                              137 POSITIVE  DS    0H                                                                       
+                                     138 *                                                                                        
+ 000266 FA00 5000 F416 00000 00416   139           AP    0(1,5),=PL1'1'       INCREMENT COUNTER                                   
+                                     140 *                                                                                        
+ 00026C F900 5000 9000 00000 00000   141           CP    0(1,5),0(1,9)        COMPARE PACK VALUES IN 5 & 9                        
+                                     142 *                                                                                        
+ 000272 4740 F290            00290   143           BL    NOPRINT              BRANCH TO NOPRINT LABEL                             
+                                     144 *                                                                                        
+ 000276 E020 F379 0085 00379         145           XPRNT PLINE,133            PRINT LINE                                          
+                                     146 *                                                                                        
+ 00027C 9240 F37A      0037A         147           MVI   PLINE+1,C' '         MOVE SPACE TO PLINE + 1                             
+ 000280 D282 F37B F37A 0037B 0037A   148           MVC   PLINE+2(131),PLINE+1   CLEAR OUT LINE                                    
+                                     149 *                                                                                        
+ 000286 F800 5000 F417 00000 00417   150           ZAP   0(1,5),=PL1'0'       ZERO OUT CONTER                                     
+                                     151 *                                                                                        
+ 00028C 4160 F379            00379   152           LA    6,PLINE              NEW PRINT LINE                                      
+                                     153 *                                                                                        
+ 000290 4120 2004            00004   154 NOPRINT   LA    2,4(,2)              INCREMENT POINTER TO NEXT ENTRY                     
+ 000294 4170 2000            00000   155           LA    7,0(,2)              R7 = NEXT INTEGER IN TABLE                          
+                                     156 *                                                                                        
+ 000298 47F0 F236            00236   157           B     LOOP3                BRANCH TO TOP OF LOOOP3                             
+                                     158 *                                                                                        
+ 00029C E020 F379 0085 00379         159 ENDLOOP3  XPRNT PLINE,133            PRINTS THE REMAINING #'S                            
+                                     160 *                                                                                        
+ 0002A2 900F F2B4            002B4   161           STM   0,15,SAVEP           SAVE ALL REGISTERS                                  
+ 0002A6 980F F2B4            002B4   162           LM    0,15,SAVEP           LOAD REGISTERS                                      
+ 0002AA E020 F418 0001 00418         163           XPRNT =C' ',1              BLANK LINE                                          
+                                     164 *                                                                                        
+ 0002B0 07FB                         165           BR    11                   BRANCH TO REGISTER 11                               
+                                     166 *                                                                                        
+1                                                                                                               PAGE    4         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+ 0002B4                              167 SAVEP     DS    16F                  SAVE PRINT                                          
+                                     168 *                                                                                        
+ 0002F4 0C                           169 COUNTER   DC    PL1'0'               USED FOR AS A COUNTER                               
+                                     170 *                                                                                        
+ 0002F5 F1                           171 HEADER1   DC    C'1'                 HEADER WITH CC ON TOP OF PAGE                       
+ 0002F6 E3C8C540D5E4D4C2             172           DC    CL19'THE NUMBERS PRINTED'                                                
+ 000309 4040                         173 COLUMN1   DC    CL2' '               VALUE PER PRINT LINE                                
+ 00030B 40D7C5D940D3C9D5             174           DC    CL10' PER LINE.'                                                         
+ 000315 4040404040404040             175           DC    100C' '                                                                  
+                                     176 *                                                                                        
+ 000379 F0                           177 PLINE     DC    C'0'                 HOLDS THE VALUES TO BE PRINTED                      
+ 00037A 4040404040404040             178           DC    132C' '                                                                  
+                                     179 *                                                                                        
+                                     180 ******************************************************************                       
+                                     181           END   ASSIGN8                                                                  
+ 000400 00000004                     182                =F'4'                                                                     
+ 000404 4020                         183                =XL2'4020'                                                                
+ 000406 40206B2020206B20             184                =XL10'40206B2020206B202120'                                               
+ 000410 00000000000C                 185                =PL6'0'                                                                   
+ 000416 1C                           186                =PL1'1'                                                                   
+ 000417 0C                           187                =PL1'0'                                                                   
+ 000418 40                           188                =C' '                                                                     
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    8324 HIGH:     992 LEAVING:  484252 FREE BYTES. AVERAGE:       49 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.001 SECS,   189000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+                                                                                                                                  
+1THE NUMBERS PRINTED 4 PER LINE.                                                                                                  
+                                                                                                                                  
+      $356       $45        $2       $50                                                                                          
+      $667       $77        $0       $39                                                                                          
+     -$495       $98    $1,222   -$1,079                                                                                          
+       $77       $87       $22      -$89                                                                                          
+       $25      -$34        $8      $100                                                                                          
+      $543       -$4       $88       $92                                                                                          
+       $51       $57    $1,234       $56                                                                                          
+      -$90    $8,876                                                                                                              
+                                                                                                                                  
+                                                                                                                                  
+1THE NUMBERS PRINTED 6 PER LINE.                                                                                                  
+                                                                                                                                  
+      $356       $45        $2       $50      $667       $77                                                                      
+        $0       $39     -$495       $98    $1,222   -$1,079                                                                      
+       $77       $87       $22      -$89       $25      -$34                                                                      
+        $8      $100      $543       -$4       $88       $92                                                                      
+       $51       $57    $1,234       $56      -$90    $8,876                                                                      
+                                                                                                                                  
+                                                                                                                                  
+0*** EXECUTION TIME =    0.001 SECS.      1327 INSTRUCTIONS EXECUTED -  1327000 INSTRUCTIONS/SEC ***                              
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

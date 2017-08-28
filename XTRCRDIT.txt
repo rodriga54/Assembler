@@ -1,0 +1,92 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 23.36.51 JOB04653 ---- MONDAY,    03 AUG 2015 ----
+ 23.36.51 JOB04653  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 23.36.51 JOB04653  ICH70001I KC03F7F  LAST ACCESS AT 23:30:22 ON MONDAY, AUGUST 3, 2015
+ 23.36.51 JOB04653  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 23.36.51 JOB04653  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  03 AUG 2015 JOB EXECUTION DATE
+-           48 CARDS READ
+-           92 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-            8 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB04653
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00020000
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+         4 //SYSPRINT DD SYSOUT=*                                                  00040000
+         5 //SYSIN    DD *                                                         00050000
+           //*                                                                     00310002
+ ICH70001I KC03F7F  LAST ACCESS AT 23:30:22 ON MONDAY, AUGUST 3, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB04653.D0000102.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB04653.D0000101.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015215.2336
+ IEF032I STEP/JSTEP01 /STOP  2015215.2336 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    12280K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015215.2336
+ IEF033I  JOB/KC03F7FA/STOP  2015215.2336 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00114099         
+                                       2 * NAME: ABRAHAM RODRIGUEZ                                       *       00115099         
+                                       3 *                                                               *       00115199         
+                                       4 * ASSIGNMENT EXTRA CREDTI                                       *       00115299         
+                                       5 *                                                               *       00116099         
+                                       6 * FUNCTION: THIS PROGRAM LOOPS FROM 1 TO 500 AND ADDING THEM AS *       00117099         
+                                       7 * THEY COUNT TO 500.                                            *       00118099         
+                                       8 *                                                               *       00118399         
+                                       9 * INPUT: NONE                                                   *       00119099         
+                                      10 *                                                               *       00119299         
+                                      11 * OUTPUT: PRINTS THE SUM OF NUMBERS 1 TO 500 = 125250           *       00119399         
+                                      12 *                                                               *       00119699         
+                                      13 * REGISTER USAGE:                                               *       00119799         
+                                      14 *               R3 = USED FOR ADDING 1 - 500 INTEGERS           *       00119899         
+                                      15 *               R4 = USED FOR MAX NUMBER                        *       00119999         
+                                      16 *               R5 = USED FOR A COUNTER                         *       00120099         
+                                      17 *               R6 = SET TO 1 AND ADDED TO COUNTER              *       00120199         
+                                      18 *****************************************************************       00121199         
+ 000000                               19 MAIN      CSECT                                                         00130001         
+ 000000                               20           USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099         
+                                      21 *                                                                       00150002         
+ 000000 4130 0000            00000    22           LA    3,0                 LOADING R3 TO ZERO                  00151099         
+ 000004 4140 01F4            001F4    23           LA    4,500               LOADING R4 TO 500                   00152099         
+ 000008 4150 0001            00001    24           LA    5,1                 LOADING COUNTER TO 1                00153099         
+ 00000C 4160 0001            00001    25           LA    6,1                 SET R6 TO 1                         00153199         
+                                      26 *                                                                       00154099         
+ 000010 1954                          27 LOOP1     CR    5,4                 COMPARE R5 TO R4                    00180099         
+ 000012 4720 F01E            0001E    28           BH    ENDLOOP1            BRANCH HIGH ENDLOOP1                00181099         
+ 000016 1A35                          29           AR    3,5                 ADD R5 TO R3                        00190099         
+ 000018 1A56                          30           AR    5,6                 ADD R6 TO R5                        00200099         
+ 00001A 47F0 F010            00010    31           B     LOOP1               BRANCH TO LOOP1                     00287099         
+ 00001E 5230 F052            00052    32 ENDLOOP1  XDECO 3,SUM1              MOVE TO PRINT LINE                  00288099         
+ 000022 E020 F030 0085 00030          33           XPRNT PRINT,133           PRINT LINE                          00288199         
+ 000028 07FE                          34           BR    14                  BRANCH R15                          00288299         
+                                      35           LTORG                                                         00289099         
+                                      36 *                                                                       00289199         
+ 000030 F0                            37 PRINT     DC    C'0'                PRINT LINE                          00289299         
+ 000031 E3C8C540E2E4D440              38           DC    CL33'THE SUM OF THE NUMBERS 1 TO 500: '                 00289399         
+ 000052 404040404040                  39 SUM1      DC    CL6' '              HOLDS THE SUM                       00289499         
+ 000058 4040404040404040              40           DC    94C' '             FILLS REST OF 133 LINE               00289599         
+                                      41           END   MAIN                END MAIN PROGRAM                    00290099         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:    1640 HIGH:     420 LEAVING:  491508 FREE BYTES. AVERAGE:       49 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,    42000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0THE SUM OF THE NUMBERS 1 TO 500:       125250                                                                                    
+0*** EXECUTION TIME =    0.001 SECS.      2509 INSTRUCTIONS EXECUTED -  2509000 INSTRUCTIONS/SEC ***                              
+0*** FIRST CARD NOT READ: NO CARDS READ:FILE UNOPENED                                                                             
+1*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

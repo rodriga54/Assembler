@@ -1,0 +1,272 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID
+//JSTEP01  EXEC PGM=ASSIST
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR
+//SYSPRINT DD SYSOUT=*
+//SYSIN    DD *
+*****************************************************************
+* NAME: ABRAHAM RODRIGUEZ                                       *
+*                                                               *
+* ASSIGNMENT 7 - CALLING INTERNAL BUILD SUBROUTINES             *
+*                                                               *
+* FUNCTION: THIS PROGRAM READS A SINGLE NUMBER OF INTEGERS      *
+* FROM INPUT FILE. IT THEN CALLS TH 3 INTERNAL SUBROUTINES.     *
+* BUILD TO BUILD A TABLE, PRINT TO PRINT THE TABLE, AND STATS   *
+* TO PRINT OUT HIGHEST,LOWEST, POSITIVE, AND NEGATIVE NUMBERS.  *
+*                                                               *
+* INPUT:THE INPUT LINE CONTIANS AN UNKNOWN AMOUNT OF INTEGERS   *
+* TO BE PROCESSED.                                              *
+*                                                               *
+* OUTPUT: PRINTS THREE REPORTS, FIRST PRINT, PRINTS A TABLE OF  *
+* FIVE COLUMNS, THE SECOND PRINT, PRINTS THE STATS OF THE TABLE *
+* THE HIGHEST AND LOWEST NUMBERS AS WELL AS THE TOTAL OF        *
+* POSITIVE AND NEGATIVE NUMBERS PROCESSED IN TABLE.             *
+*                                                               *
+* REGISTER USAGE:                                               *
+*               R2 = USED TO STORE TABLE OF RECORDS             *
+*               R3 = USED FOR THE POINTER OF END OF TABLE       *
+*               R4 = HOLDS THE NUMBER OF COLUMNS TO PRINT       *
+*               R5 = COUNTER FOR THE NEGATIVE NUMBER            *
+*               R6 = COUNTER FOR THE POSITIVE NUMBER            *
+*               R7 = USED FOR LOWEST COUNTER                    *
+*               R8 = USED FOR HIGHEST COUNTER                   *
+*               R9 = USED FOR THE SUM OF ALL RECORDS            *
+*                                                               *
+*****************************************************************
+MAIN      CSECT
+          USING MAIN,15             ESTABLISH BASE REGISTER 15
+*
+          SR    3,3                 HOLDS THE SUM OF ALL RECORDS
+          SR    4,4                 COUNTER FOR THE ZERO NUMBER
+          SR    5,5                 COUNTER FOR THE NEGATIVE NUMBER
+          SR    6,6                 COUNTER FOR THE POSITIVE NUMBER
+          SR    7,7                 HOLDS THE LOWEST NEG NUM
+          SR    8,8                 HOLDS THE GREATEST POS NUM
+          SR    9,9                 HOLDS NUMBER OF RECORDS PROCESSED
+*
+          LA    1,PARMS1            R1 = PARMS1
+          BAL   11,BUILD            BRANCH TO BUILD ROUTINE.
+*
+          LA    1,PARMS2            R1 = PARMS2
+          BAL   11,PRINT            BRANCH TO PRINT ROUTINE.
+*
+          LA    1,PARMS1            R1 = PARMS1
+          BAL   11,STATS            BRANCH TO STATS ROUTINE.
+*
+          LA    4,3                 LOAD 3 INTO R4
+          ST    4,NUM1              STORE R4 IN VARIABLE NUM1
+*
+          LA    1,PARMS2            R1 = PARMS2
+          BAL   11,PRINT            BRANCH TO PRINT ROUTINE.
+*
+          BR    14
+********************************************************************
+*               STORAGE FOR THE MAIN DRIVER PROGRAM.
+********************************************************************
+          LTORG
+*
+TABLE     DC    50F'-1'            TABLE
+EOT       DC    F'0'               HOLDS THE LAST ADDRESS OF ENTRY
+*
+NUM1      DC    F'5'               HOLDS NUM OF INTEGERS TO PRINT LINE
+*
+PARMS1    DC    A(TABLE,EOT)
+PARMS2    DC    A(TABLE,EOT,NUM1)
+*
+******************************************************************
+*               THE START OF BUILD SUBROUTINE.
+******************************************************************
+BUILD     STM   0,15,SAVEB          STORE REGISTER
+*
+          LM    2,3,0(1)            R2 = TABLE
+*                                   R3 = EOT
+          XREAD CARD,80             READ THE NEXT VALUE FROM INPUT
+*
+LOOP1     BNZ   ENDLOOP1            BRANCH ON OVERFLOW
+*
+          XDECI 4,CARD              READ THE FIRST VALUE
+*
+LOOP2     BO    ENDLOOP2            BRANCH ON OVERFLOW
+*
+          ST    4,0(,2)             STORE NUMBER IN TABLE
+          LA    2,4(,2)             INCREMENTS TABLE POINTER
+*
+          XDECI 4,0(1)              READING NEXT NUMBER
+          B     LOOP2               BRANCH TO LOOP1
+*
+ENDLOOP2  XREAD CARD,80             ENDLOOP2; READ NEST LINE
+*
+          B     LOOP1               BRANCH TO LOOP1
+*
+ENDLOOP1  S     2,=F'4'             ENDLOOP1 AND STORE 4 IN R2
+*
+          ST    2,0(,3)             STORE REGISTERS
+          LM    0,15,SAVEB          LOAD REGISTERS
+          BR    11                  RETURN TO MAIN
+*
+SAVEB     DS    16F
+*
+CARD      DS    CL80
+          DC    C'$'
+*
+******************************************************************
+*               THE START OF PRINT SUBROUTINE.
+******************************************************************
+PRINT     STM   0,15,SAVEP           STORE REGISTERS
+*
+*
+          LM    2,4,0(1)              R2 = TABLE
+*                                     R3 = EOT
+*                                     R4 = NUM1
+          L     3,0(,3)               R3 -> LAST FILLED TABLE ENTRY
+          L     4,0(,4)               R4 = # PER PRINT LINE
+*
+          LR    5,4                   R5 = # PER PRINT LINE
+*
+          SR    5,5                   RESEST COUNTER
+          LA    6,PLINE+1             R6 -> PLACE TO XDECO INTEGER TO
+          L     7,0(,2)               R7 = INTEGER FROM TABLE
+*
+          XPRNT =C' ',1
+          XDECO 4,COLUMN1             NUMBER OF COLUMNS TO PRINT LINE
+          XPRNT TOTAL1,133            PRINT THE LINE
+          XPRNT =C' ',1
+*
+LOOP3     CR    2,3                   COMPARE REGISTERS
+          BH    ENDLOOP3              ENDLOOP3
+*
+          XDECO 7,0(6)                PLACE INTEGER TO PRINT LINE
+          LA    6,20(,6)              INCREMENT PLINE POINTER
+          LA    5,1(,5)               INCREMENT COUNTER
+*
+          CR    5,4                   COMPARE R5 TO R4
+          BL    NOPRINT               BRANCH LOW TO NO PRINT
+*
+          XPRNT PLINE,133             PRINT LINE
+*
+          MVI   PLINE+1,C' '          MOVE SPACE TO PLINE + 1
+          MVC   PLINE+2(131),PLINE+1   CLEAR OUT LINE
+*
+          SR    5,5                   R5 = 0 COUNTER
+          LA    6,PLINE+1
+*
+NOPRINT   LA    2,4(,2)               INCREMENT POINTER TO NEXT ENTRY
+          L     7,0(,2)               R7 = NEXT INTEGER IN TABLE
+          B     LOOP3                 BRANCH TO TOP OF LOOOP3
+*
+ENDLOOP3  STM   0,15,SAVEP            ENDLOOP3, STORE REGISTERS
+*
+          LM    0,15,SAVEP            LOADING ALL REGISTERS
+          XPRNT =C' ',1               PRINT BLANK LINE
+*
+          BR    11                    BRANCH TO R11
+*
+SAVEP     DS    16F
+*
+TOTAL1    DC    C'0'
+          DC    CL40'THE AMOUNT OF NUMBERS PER LINE IN TABLE:'
+COLUMN1   DC    CL11' '
+          DC    81C' '
+*
+PLINE     DC    C'0'
+          DC    132C' '
+*
+          BR    11                  BRANCH TO R11
+******************************************************************
+*               THE START OF STATS SUBROUTINE.
+******************************************************************
+STATS     STM   0,15,SAVES          STORE CURRENT REGISTERS
+*
+          LM    2,3,0(1)            R2 = TABLE; R3 = EOT
+          L     3,0(,3)             LOAD R3
+*
+          LA    6,PLINE2+1          R6 -> PLACE TO XDECO INTEGER TO
+          L     7,0(,2)             R7 = FIRST INTEGER FROM TABLE
+*
+          SR    4,4                 ZERO OUT R4
+          SR    5,5                 ZERO OUT R5
+*
+LOOP4     CR    2,3                 COMPARE TO END OF TABLE
+          BH    ENDLOOP4            BRANCH HIGH TO ENDLOOP4
+*
+          LTR   7,7                 LOAD TEST R7
+*
+          BM    NEGATIVE            BRANCH IF NEGATIVE
+          B     POSITIVE            BRANCH IF POSITIVE
+*
+NEGATIVE  LA    4,1(,4)             COUNTER FOR NEGATIVE NUMBERS
+          CR    7,8                 COMPARE R7 TO R2
+*
+          BL    NEWLOW              BRANCH IF NEW LOW FOUND
+          B     NEXTLINE            ELSE READ IN NEXT VALUE
+NEWLOW    LR    8,7                 LOADING NEW LOWEST NUMBER
+          B     NEXTLINE            ELSE READ IN NEXT VALUE
+*
+POSITIVE  LA    5,1(,5)             COUNTER FOR POSITIVE NUMBERS
+          CR    7,9                 COMPARING REGISTERS 2 TO 7
+*
+          BH    NEWHIGH             BRANCH IF NEW HIGH IS FOUND
+          B     NEXTLINE            ELSE READ IN NEXT VALUE
+NEWHIGH   LR    9,7                 LOAD NEW HIGHEST NUMBER
+          B     NEXTLINE            ELSE READ IN NEXT VALUE
+*
+NEXTLINE  LA    2,4(,2)             LOAD ADDRESS OF OF NEXT VALUE
+          L     7,0(,2)             LOAD R7
+          B     LOOP4               BRANCH BACK TO LOOP4
+*
+ENDLOOP4  XDECO 8,LOWEST            PLACE LOWEST INTEGER IN PRINT LINE
+          XPRNT PLINE2,133          PRINT THE LINE
+*
+          XDECO 4,LOWNUM            PLACE LOWEST INTEGER IN PRINT LINE
+          XPRNT PLINE3,133          PRINT THE LINE
+*
+          XDECO 9,HIGHEST           PLACE LOWEST INTEGER IN PRINT LINE
+          XPRNT PLINE4,133          PRINT THE LINE
+*
+          XDECO 5,HIGHNUM           PLACE LOWEST INTEGER IN PRINT LINE
+          XPRNT PLINE5,133          PRINT THE LINE
+*
+          LM    0,15,SAVES          LOAD REGISTERS
+*
+          BR    11                  BRANCH TO R11
+*
+SAVES     DS    16F            SAVE STATS REGISTERS
+*
+PLINE2    DC    C'0'
+          DC    CL26'LOWEST NUMBER IN TABLE:  '
+LOWEST    DC    CL12' '
+          DC    94C' '
+*
+PLINE3    DC    C'0'
+          DC    CL26'TOTAL NEGATIVE NUMBERS:  '
+LOWNUM    DC    CL12' '
+          DC    94C' '
+*
+PLINE4    DC    C'0'
+          DC    CL26'HIGHEST NUMBER IN TABLE: '
+HIGHEST   DC    CL12' '
+          DC    94C' '
+*
+PLINE5    DC    C'0'
+          DC    CL26'TOTAL POSITIVE NUMBERS:  '
+HIGHNUM   DC    CL12' '
+          DC    94C' '
+***********************************************
+*             INPUT DATA                      *
+***********************************************
+          END   MAIN
+/*
+//*
+//FT05F001  DD *
+ 356 45   2                    50
+ 667              77
+ 0      39        -495                  98
+ 222            -79
+ 77
+ 87 22   -89
+ 25
+ -34     8
+ 100     543    -4
+ 88    92 51    57
+ 1234
+ 56    -90   8876
+/*

@@ -1,0 +1,81 @@
+1                    J E S 2  J O B  L O G  --  S Y S T E M  S 0 W 1  --  N O D E  Z O S K C T R         
+0 
+ 18.32.14 JOB08942 ---- MONDAY,    29 JUN 2015 ----
+ 18.32.14 JOB08942  IRR010I  USERID KC03F7F  IS ASSIGNED TO THIS JOB.
+ 18.32.14 JOB08942  ICH70001I KC03F7F  LAST ACCESS AT 18:28:33 ON MONDAY, JUNE 29, 2015
+ 18.32.14 JOB08942  $HASP373 KC03F7FA STARTED - INIT 2    - CLASS A        - SYS S0W1
+ 18.32.14 JOB08942  -                                         --TIMINGS (MINS.)--            ----PAGING COUNTS---
+ 18.32.14 JOB08942  -JOBNAME  STEPNAME PROCSTEP    RC   EXCP    TCB    SRB  CLOCK   SERV  PG   PAGE   SWAP    VIO SWAPS
+ 18.32.14 JOB08942  -KC03F7FA                      00     37 ******    .00     .0     81   0      0      0      0     0
+ 18.32.14 JOB08942  -KC03F7FA ENDED.  NAME-ABRAHAM RODRIGUEZ    TOTAL TCB CPU TIME=   .00  TOTAL ELAPSED TIME=    .0
+ 18.32.14 JOB08942  $HASP395 KC03F7FA ENDED
+0------ JES2 JOB STATISTICS ------
+-  29 JUN 2015 JOB EXECUTION DATE
+-           30 CARDS READ
+-           81 SYSOUT PRINT RECORDS
+-            0 SYSOUT PUNCH RECORDS
+-            7 SYSOUT SPOOL KBYTES
+-         0.00 MINUTES EXECUTION TIME
+         1 //KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           JOB08942
+           IEFC653I SUBSTITUTION JCL - ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=KC03F7F
+         2 //JSTEP01  EXEC PGM=ASSIST                                              00002012
+         3 //STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00003012
+         4 //SYSPRINT DD SYSOUT=*                                                  00004012
+         5 //SYSIN    DD *                                                         00005012
+ ICH70001I KC03F7F  LAST ACCESS AT 18:28:33 ON MONDAY, JUNE 29, 2015
+ IEF236I ALLOC. FOR KC03F7FA JSTEP01
+ IGD103I SMS ALLOCATED TO DDNAME STEPLIB
+ IEF237I JES2 ALLOCATED TO SYSPRINT
+ IEF237I JES2 ALLOCATED TO SYSIN
+ IEF142I KC03F7FA JSTEP01 - STEP WAS EXECUTED - COND CODE 0000
+ IGD104I KC00NIU.ASSIST.LOADLIB                       RETAINED,  DDNAME=STEPLIB 
+ IEF285I   KC03F7F.KC03F7FA.JOB08942.D0000102.?         SYSOUT        
+ IEF285I   KC03F7F.KC03F7FA.JOB08942.D0000101.?         SYSIN         
+ IEF373I STEP/JSTEP01 /START 2015180.1832
+ IEF032I STEP/JSTEP01 /STOP  2015180.1832 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+         VIRT:   584K  SYS:   264K  EXT:        0K  SYS:    11468K
+         ATB- REAL:                    12K  SLOTS:                     0K
+              VIRT- ALLOC:       2M SHRD:       0M
+ IEF375I  JOB/KC03F7FA/START 2015180.1832
+ IEF033I  JOB/KC03F7FA/STOP  2015180.1832 
+         CPU:     0 HR  00 MIN  00.00 SEC    SRB:     0 HR  00 MIN  00.00 SEC    
+1*** ASSIST 4.0/A2-05/15/82  470/V7A/0:OS/VS2  INS=SDFP7/X=BGHO, CHECK/TRC/=1180, OPTS=CDKMPR FROM PENN ST*NIU COMPSCI*LT         
+0                                                                                                                                 
+0                                                                                                               PAGE    1         
+0  LOC  OBJECT CODE    ADDR1 ADDR2  STMT   SOURCE STATEMENT                                                                       
+                                       1 *****************************************************************       00060008         
+                                       2 *                                                               *       00070008         
+                                       3 * NAME: ABRAHAM RODRIGUEZ                                       *       00071014         
+                                       4 *                                                               *       00072014         
+                                       5 * ASSIGNMENT 2A - BASIC ASSEMBLY PROGRAM                        *       00080013         
+                                       6 *                                                               *       00090008         
+                                       7 * FUNCTION:                                                     *       00092014         
+                                       8 * PART A: SUBTRACTS NUM1 FROM NUM2 BY LOADING TO REGISTERS 2 & 3*       00100013         
+                                       9 *         THEN, USE THE XDUMP TO DUMP REGISTERS.                *       00110013         
+                                      10 *                                                               *       00150008         
+                                      11 *****************************************************************       00160008         
+ 000000                               12 MAIN     CSECT                                                          00170001         
+ 000000                               13          USING MAIN,15     ESTABLISH ADDRESSABILITY ON REGISTER 15      00180001         
+                                      14 *                                                                       00181015         
+ 000000 5820 F014            00014    15          L     2,N1        LOAD NUM1 INTO R2                            00190010         
+ 000004 5830 F018            00018    16          L     3,N2        LOAD NUM2 INTO R3                            00200010         
+ 000008 1B23                          17          SR    2,3         SUBTRACTS REGISTER 2 FROM 3                  00210010         
+ 00000A E160 0000 0000 00000          18          XDUMP                                                          00211010         
+ 000010 07FE                          19          BR    14          RETURN TO CALLER                             00220001         
+                                      20 *                                                                       00220115         
+ 000014 0000000F                      21 N1       DC    F'15'       INITIALIZE VARAIBLE N1 AS FULLWORD 15        00221009         
+ 000018 00000007                      22 N2       DC    F'7'        INITIALIZE VARAIBLE N2 AS FULLWORD 7         00222009         
+                                      23 *                                                                       00223015         
+                                      24          END   MAIN                                                     00230001         
+0***  NO   STATEMENTS FLAGGED -  NO   WARNINGS,  NO   ERRORS                                                                      
+0*** DYNAMIC CORE AREA USED:  LOW:     812 HIGH:     352 LEAVING:  492404 FREE BYTES. AVERAGE:       46 BYTES/STMT ***            
+0*** ASSEMBLY TIME =    0.000 SECS,    25000 STATEMENTS/SEC ***                                                                   
+0*** PROGRAM EXECUTION BEGINNING - ANY OUTPUT BEFORE EXECUTION TIME MESSAGE IS PRODUCED BY USER PROGRAM ***                       
+0BEGIN XSNAP - CALL     1 AT E0000010 USER REGISTERS                                                                              
+0 REGS 0-7      F4F4F4F4    F4F4F4F4    00000008    00000007    F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4                      
+  REGS 8-15     F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    F4F4F4F4    00000020    FFFE7960    00000000                      
+0                                                                                                                                 
+0*** EXECUTION TIME =    0.000 SECS.         5 INSTRUCTIONS EXECUTED -     5000 INSTRUCTIONS/SEC ***                              
+0*** FIRST CARD NOT READ: NO CARDS READ:FILE UNOPENED                                                                             
+0*** AM004 - NORMAL USER TERMINATION BY RETURN ***                                                                                

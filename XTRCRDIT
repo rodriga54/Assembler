@@ -1,0 +1,48 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           00010005
+//JSTEP01  EXEC PGM=ASSIST                                              00020000
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN    DD *                                                         00050000
+*****************************************************************       00114099
+* NAME: ABRAHAM RODRIGUEZ                                       *       00115099
+*                                                               *       00115199
+* ASSIGNMENT EXTRA CREDTI                                       *       00115299
+*                                                               *       00116099
+* FUNCTION: THIS PROGRAM LOOPS FROM 1 TO 500 AND ADDING THEM AS *       00117099
+* THEY COUNT TO 500.                                            *       00118099
+*                                                               *       00118399
+* INPUT: NONE                                                   *       00119099
+*                                                               *       00119299
+* OUTPUT: PRINTS THE SUM OF NUMBERS 1 TO 500 = 125250           *       00119399
+*                                                               *       00119699
+* REGISTER USAGE:                                               *       00119799
+*               R3 = USED FOR ADDING 1 - 500 INTEGERS           *       00119899
+*               R4 = USED FOR MAX NUMBER                        *       00119999
+*               R5 = USED FOR A COUNTER                         *       00120099
+*               R6 = SET TO 1 AND ADDED TO COUNTER              *       00120199
+*****************************************************************       00121199
+MAIN      CSECT                                                         00130001
+          USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099
+*                                                                       00150002
+          LA    3,0                 LOADING R3 TO ZERO                  00151099
+          LA    4,500               LOADING R4 TO 500                   00152099
+          LA    5,1                 LOADING COUNTER TO 1                00153099
+          LA    6,1                 SET R6 TO 1                         00153199
+*                                                                       00154099
+LOOP1     CR    5,4                 COMPARE R5 TO R4                    00180099
+          BH    ENDLOOP1            BRANCH HIGH ENDLOOP1                00181099
+          AR    3,5                 ADD R5 TO R3                        00190099
+          AR    5,6                 ADD R6 TO R5                        00200099
+          B     LOOP1               BRANCH TO LOOP1                     00287099
+ENDLOOP1  XDECO 3,SUM1              MOVE TO PRINT LINE                  00288099
+          XPRNT PRINT,133           PRINT LINE                          00288199
+          BR    14                  BRANCH R15                          00288299
+          LTORG                                                         00289099
+*                                                                       00289199
+PRINT     DC    C'0'                PRINT LINE                          00289299
+          DC    CL33'THE SUM OF THE NUMBERS 1 TO 500: '                 00289399
+SUM1      DC    CL6' '              HOLDS THE SUM                       00289499
+          DC    94C' '             FILLS REST OF 133 LINE               00289599
+          END   MAIN                END MAIN PROGRAM                    00290099
+/*                                                                      00300002
+//*                                                                     00310002

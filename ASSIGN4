@@ -1,0 +1,130 @@
+//KC03F7FA JOB ,'ABRAHAM RODRIGUEZ',MSGCLASS=H,NOTIFY=&SYSUID           00010005
+//JSTEP01  EXEC PGM=ASSIST                                              00020000
+//STEPLIB  DD DSN=KC00NIU.ASSIST.LOADLIB,DISP=SHR                       00030000
+//SYSPRINT DD SYSOUT=*                                                  00040000
+//SYSIN    DD *                                                         00050000
+*****************************************************************       00114099
+* NAME: ABRAHAM RODRIGUEZ                                       *       00115099
+*                                                               *       00115199
+* ASSIGNMENT 4 - LOOPING, XREAD & XPRNT                         *       00115299
+*                                                               *       00116099
+* FUNCTION: THIS PROGRAM READS AN UNKNOWN NUMBER OF EMPLOYEES   *       00117099
+* AND CALCULATES THERE NET PAY. EACH EMPLOYEE HAS A BASE SALARY *       00118099
+* OF $400. THE FINAL OUTPUT IS EACH EMPLOYEES NET PAY.          *       00118199
+*                                                               *       00118399
+* INPUT:THE INPUT LINE CONTIANS 7 RECORDS WITH EMPLOYEE_ID,     *       00119099
+* COMMISION, DEDUCTIONS, AND BONUS.                             *       00119199
+*                                                               *       00119299
+* OUTPUT: PRINTS THE ALL THE INPUT DATA SUMS EACH RECORD. ONCE  *       00119399
+* THE DATA REACHES THE END OF FILE A NEW LINE PRINTS THE TOTAL  *       00119499
+* NETPAY AND A GRAND TOTAL NETPAY FOR ALL EMPLOYEES.            *       00119599
+*                                                               *       00119699
+* REGISTER USAGE:                                               *       00119799
+*               R3 = USED FOR XREAD INPUT DATA                  *       00119899
+*               R4 = USED FOR EACH EMPLOYEES BASE PAY           *       00119999
+*               R5 = USED FOR THE GRAND TOTAL NET SUM           *       00120099
+*               R6 = USED FOR EACH EMPLOYEES NET PAY             *      00120199
+*                                                               *       00120399
+* NOTES:                                                        *       00120999
+*                                                               *       00121099
+*****************************************************************       00121199
+MAIN      CSECT                                                         00130001
+          USING MAIN,15             ESTABLISH BASE REGISTER 15          00140099
+*                                                                       00150002
+          SR    5,5                 SET R5 = 0                          00150299
+*         SR    3,3                 SET R3 = 0                          00150399
+          XREAD BUFFER,80           READ FIRST RECORD                   00151099
+          XPRNT PRINT1,133          PRINTS COLUMN HEADERS               00151199
+*                                                                       00152002
+LOOP1     BC    B'0111',ENDLOOP1    EOF BRANCH IF YES.                  00160099
+*                                   START OF COLUMN 1                   00170099
+          SR    6,6                 RESETS THE SUM = 0                  00180099
+*                                                                       00190099
+          MVC   OEMPID(5),BUFFER    MOVE ID TO PRINT LINE               00190199
+*                                                                       00190299
+          L     4,BASEPAY1          LOADS THE BASEPAY TO R4             00190399
+*         XDECI 3,BUFFER            R3 = HOLDS EVERYONES BASEPAY        00191099
+          XDECO 4,OBASEPAY          CONVERTS TO BASE 10                 00192099
+          AR    6,4                 ACCUMULATING SUM                    00192199
+*                                                                       00192299
+*         MVC   OEMPID(5),BUFFER   MOVE ID TO PRINT LINE                00192399
+*                                  START OF COMMISSIONS                 00192499
+          XDECI 3,BUFFER+5         R3 = HOLDS THE SECOND COLUMN         00193099
+          XDECO 3,OCOMMIS          CONVERTS TO BASE 10                  00193199
+          AR    6,3                ACCUMULATING SUM                     00193399
+*                                                                       00193499
+*                             START OF DEDUCTIONS                       00193599
+          XDECI 3,0(,1)       R3 = HOLDS THE THIRD COLUMN               00193799
+          XDECO 3,ODEDUCT     CONVERTS TO BASE 10                       00193899
+          SR    6,3           SUBTRACT FROM THE SUM                     00194099
+*                                                                       00195023
+*                             START OF BONUS                            00195199
+          XDECI 3,0(,1)       R3 = HOLDS THE FORTH COLUMN               00195299
+          XDECO 3,OBONUS      CONVERTS TO BASE 10                       00195399
+          AR    6,3           ACCUMULATING THE SUM                      00195499
+*                                                                       00195599
+          XDECO 6,ONETPAY1    SUBTOTAL PER ROW                          00195699
+*                                                                       00196011
+          AR    5,6           ADDS THE GRAND TOTAL                      00214399
+*                                                                       00214499
+          XPRNT PRINT2,133    PRINTS ROW WITH SUM                       00214599
+          XREAD BUFFER,80     READS THE NEXT RECORD                     00214699
+*                                                                       00215033
+          BC    B'1111',LOOP1    BRANCH TO BEGINNING OF LOOP            00220099
+*                                                                       00230399
+ENDLOOP1  XDECO 5,ONETPAY2    END OF LOOP1 AND CONVERTS R5 TO BASE 10   00231099
+*                                                                       00240099
+          XPRNT SUMMARY,133   PRINTS THE SUMMARY                        00241099
+*                                                                       00244099
+          LTORG                                                         00250003
+*                                                                       00251099
+BASEPAY1  DC    F'400'        INITIALIZE BASE PAY = 400                 00252099
+*                                                                       00260002
+SUMMARY   DC    C'0'          BUFFER FOR THE RECORD SUMMARY             00261099
+          DC    41C' '                                                  00264099
+          DC    CL15'TOTAL NET PAY: '                                   00265099
+ONETPAY2  DS    CL5           HOLDS THE TOTAL NET PAY                   00266099
+          DC    73C' '                                                  00266199
+*                                                                       00267099
+BUFFER    DS    CL80          BUFFER FOR THE READ RECORD                00270099
+*                                                                       00280002
+PRINT1    DC    C'0'          DOUBLE SPACE CARRIAGE CONTROL             00281099
+          DC    CL12'EMPLOYEE_ID '                                      00281199
+          DC    3C' '                                                   00281299
+          DC    CL12'BASE PAY    '                                      00281399
+          DC    CL12'COMMISSION  '                                      00281499
+          DC    CL12'DEDUCTIONS  '                                      00281599
+          DC    CL12'BONUS       '                                      00281699
+          DC    CL12'NETPAY      '                                      00281799
+          DC    58C' '                                                  00281899
+*         DC    8C' '                                                   00281999
+PRINT2    DC    C'0'                                                    00282099
+OEMPID    DS    CL5           HOLDS DATA FOR EMPLOYEE ID                00282199
+          DC    1C' '                                                   00282299
+OBASEPAY  DS    CL3           HOLDS DATA FOR BASE PAY                   00283099
+          DC    10C' '                                                  00283199
+OCOMMIS   DS    CL4           HOLDS DATA FOR COMMISSION                 00284099
+          DC    8C' '                                                   00284199
+ODEDUCT   DS    CL4           HOLDS DATA FOR DEDUCTIONS                 00284299
+          DC    8C' '                                                   00284399
+OBONUS    DS    CL4           HOLDS DATA FOR BONUS                      00284499
+          DC    8C' '                                                   00284799
+*         DC    61C' '                                                  00284899
+*         DC    8C' '                                                   00284999
+ONETPAY1  DS    CL12          HOLDS DATA FOR NET PAY PER RECORD         00285099
+          DC    61C' '                                                  00285199
+          DC    132C' '                                                 00286099
+*                                                                       00287012
+          END   MAIN                                                    00290028
+/*                                                                      00300002
+//*                                                                     00310002
+//FT05F001 DD  *                                                        00320008
+12345 2500 1000 500                                                     00330099
+23456 1900 1100 10                                                      00340099
+22222 1000 400 200                                                      00350099
+65465 4200 1500 900                                                     00360099
+44560 5000 3000 70                                                      00370099
+99870 2200 2100 0                                                       00380099
+34966 5678 0 2000                                                       00381099
+/*                                                                      00390002
+//                                                                      00400002
